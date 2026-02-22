@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>غرفة القرار — منصة التحول القيادي</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0F1117; --surface:#1A1D27; --surface2:#22263A;
+  --gold:#C9A84C; --gold-dim:rgba(201,168,76,.12); --gold-glow:rgba(201,168,76,.3);
+  --text:#F5F5F5; --text-dim:#8A8F9E;
+  --green:#2D6A4F; --green-light:#52B788;
+  --red-dim:rgba(220,53,69,.08); --red-border:rgba(220,53,69,.2); --red-text:#E07070;
+  --border:rgba(255,255,255,.07); --radius:14px;
+  --cc-bg:#0D1117; --cc-surface:#161B22; --cc-surface2:#1C2333;
+  --cc-blue:#4A90D9; --cc-blue-dim:rgba(74,144,217,.12); --cc-blue-glow:rgba(74,144,217,.25);
+  --cc-border:rgba(74,144,217,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;}
+
+/* WELCOME */
+#welcome{align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.welcome-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,.08) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 80% 100%,rgba(201,168,76,.05) 0%,transparent 60%);}
+.welcome-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:60px 60px;}
+.welcome-content{position:relative;text-align:center;max-width:640px;padding:2rem;animation:fadeUp .8s ease forwards;}
+.brand-mark{width:72px;height:72px;margin:0 auto 2rem;background:var(--gold-dim);border:1px solid var(--gold);border-radius:18px;display:flex;align-items:center;justify-content:center;}
+.welcome-title{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;line-height:1.2;margin-bottom:1rem;background:linear-gradient(135deg,#F5F5F5 0%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.welcome-sub{font-size:1.1rem;color:var(--text-dim);margin-bottom:.5rem;font-weight:300;}
+.welcome-desc{font-size:.95rem;color:var(--text-dim);line-height:1.8;margin-bottom:3rem;opacity:.8;}
+.name-input-group{display:flex;gap:1rem;margin-bottom:2rem;flex-direction:column;align-items:center;}
+.name-input{width:100%;max-width:380px;padding:1rem 1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'Tajawal',sans-serif;font-size:1rem;text-align:center;outline:none;transition:border-color .2s;}
+.name-input:focus{border-color:var(--gold);}
+.name-input::placeholder{color:var(--text-dim);}
+.btn-primary{display:inline-flex;align-items:center;gap:.6rem;padding:1rem 2.5rem;background:var(--gold);color:#0F1117;border:none;border-radius:var(--radius);font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-primary:hover{background:#d4b05e;transform:translateY(-1px);box-shadow:0 8px 24px var(--gold-glow);}
+.welcome-stats{display:flex;gap:2rem;justify-content:center;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);}
+.stat-item{text-align:center;}
+.stat-num{font-size:1.8rem;font-weight:800;color:var(--gold);}
+.stat-label{font-size:.8rem;color:var(--text-dim);margin-top:.2rem;}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100;}
+.topbar-brand{display:flex;align-items:center;gap:.8rem;font-size:1.1rem;font-weight:700;color:var(--gold);cursor:pointer;}
+.topbar-actions{display:flex;align-items:center;gap:.8rem;}
+.topbar-user{font-size:.9rem;color:var(--text-dim);}
+.topbar-user span{color:var(--text);font-weight:600;}
+.btn-topbar{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.85rem;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--text-dim);}
+.btn-topbar:hover{border-color:var(--gold);color:var(--gold);}
+.btn-topbar.cc-btn{border-color:var(--cc-blue);color:var(--cc-blue);background:var(--cc-blue-dim);}
+.btn-topbar.cc-btn:hover{background:rgba(74,144,217,.22);}
+
+/* DASHBOARD */
+.dashboard-body{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:2.5rem 2rem;}
+.influence-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-bottom:2.5rem;}
+.influence-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.influence-title{font-size:.85rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;}
+.influence-value{font-size:2.5rem;font-weight:800;color:var(--gold);font-family:'Cairo',sans-serif;}
+.influence-label{font-size:.8rem;color:var(--text-dim);}
+.influence-bar-track{width:100%;height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.influence-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold) 0%,#E8C96A 100%);border-radius:99px;transition:width 1s cubic-bezier(.4,0,.2,1);width:0%;}
+.influence-ranks{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;}
+.rank-badge{padding:.3rem .8rem;border-radius:99px;font-size:.75rem;border:1px solid var(--border);color:var(--text-dim);transition:all .3s;}
+.rank-badge.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.section-title{font-size:1.3rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:.8rem;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.chapters-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
+.chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.chapter-card::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .3s;}
+.chapter-card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.3);}
+.chapter-card:hover::before{transform:scaleX(1);}
+.chapter-num{font-size:.75rem;color:var(--gold);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.8rem;font-weight:600;}
+.chapter-title{font-size:1.15rem;font-weight:700;margin-bottom:.6rem;line-height:1.4;}
+.chapter-desc{font-size:.85rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.5rem;}
+.chapter-progress{display:flex;align-items:center;gap:.8rem;}
+.chapter-progress-bar{flex:1;height:4px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.chapter-progress-fill{height:100%;background:var(--green-light);border-radius:99px;transition:width .5s ease;}
+.chapter-progress-text{font-size:.8rem;color:var(--text-dim);white-space:nowrap;}
+.chapter-lessons-count{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--text-dim);margin-bottom:1rem;}
+
+/* CHAPTER VIEW */
+.chapter-topbar{display:flex;align-items:center;gap:1rem;padding:1.2rem 2rem;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100;}
+.btn-back{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-dim);font-family:'Tajawal',sans-serif;font-size:.85rem;cursor:pointer;transition:all .2s;}
+.btn-back:hover{border-color:var(--gold);color:var(--gold);}
+.chapter-view-body{flex:1;max-width:900px;width:100%;margin:0 auto;padding:2.5rem 2rem;}
+.chapter-hero{margin-bottom:2.5rem;}
+.chapter-hero-num{font-size:.8rem;color:var(--gold);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.8rem;}
+.chapter-hero-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;margin-bottom:.8rem;}
+.chapter-hero-goal{font-size:.95rem;color:var(--text-dim);line-height:1.8;padding:1rem 1.5rem;background:var(--surface);border-right:3px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;}
+.lessons-list{display:flex;flex-direction:column;gap:1rem;}
+.lesson-item{display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.8rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .2s;}
+.lesson-item:hover{border-color:rgba(201,168,76,.3);background:var(--surface2);}
+.lesson-item.completed{border-color:rgba(82,183,136,.3);}
+.lesson-status{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;}
+.lesson-item.completed .lesson-status{background:var(--green);border-color:var(--green-light);}
+.lesson-info{flex:1;}
+.lesson-num{font-size:.75rem;color:var(--text-dim);margin-bottom:.3rem;}
+.lesson-title{font-size:1rem;font-weight:600;}
+.lesson-arrow{color:var(--text-dim);transition:all .2s;}
+.lesson-item:hover .lesson-arrow{color:var(--gold);transform:translateX(-4px);}
+
+/* CHALLENGE CARD */
+.challenge-card{margin-top:2rem;padding:1.8rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,.3);border-radius:var(--radius);display:none;animation:fadeUp .4s ease;}
+.challenge-card.visible{display:block;}
+.challenge-label{font-size:.75rem;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.8rem;font-weight:600;}
+.challenge-title{font-size:1.1rem;font-weight:700;margin-bottom:.6rem;}
+.challenge-desc{font-size:.9rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.2rem;white-space:pre-line;}
+.challenge-textarea{width:100%;min-height:140px;padding:1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;resize:vertical;outline:none;margin-bottom:1rem;direction:rtl;transition:border-color .2s;}
+.challenge-textarea:focus{border-color:var(--gold);}
+.challenge-actions{display:flex;gap:.8rem;flex-wrap:wrap;}
+.btn-eval{display:flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;background:var(--surface2);border:1px solid var(--cc-blue);border-radius:8px;color:var(--cc-blue);font-family:'Tajawal',sans-serif;font-size:.88rem;cursor:pointer;transition:all .2s;}
+.btn-eval:hover{background:var(--cc-blue-dim);}
+.eval-flow{margin-top:1.2rem;display:none;animation:fadeUp .3s ease;}
+.eval-flow.visible{display:block;}
+.eval-step{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1rem;}
+.eval-step-label{font-size:.75rem;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;font-weight:700;}
+.eval-prompt-box{background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;padding:1rem 1rem 1rem 4rem;font-size:.85rem;color:#CDD0D9;line-height:1.7;white-space:pre-wrap;direction:rtl;position:relative;}
+.eval-copy-btn{position:absolute;top:.7rem;left:.7rem;display:flex;align-items:center;gap:.3rem;padding:.4rem .8rem;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:6px;color:var(--cc-blue);font-family:'Tajawal',sans-serif;font-size:.75rem;cursor:pointer;transition:all .2s;}
+.eval-copy-btn:hover{background:var(--cc-blue-dim);}
+.eval-result-area{width:100%;min-height:120px;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;resize:vertical;outline:none;direction:rtl;transition:border-color .2s;margin-top:.8rem;}
+.eval-result-area:focus{border-color:var(--gold);}
+.eval-result-display{background:var(--surface2);border:1px solid rgba(82,183,136,.3);border-radius:8px;padding:1.2rem;margin-top:.8rem;font-size:.9rem;color:#CDD0D9;line-height:1.8;display:none;white-space:pre-wrap;direction:rtl;}
+.eval-result-display.visible{display:block;animation:fadeUp .3s ease;}
+
+/* LESSON VIEW */
+.lesson-topbar{display:flex;align-items:center;gap:1rem;padding:1rem 2rem;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100;}
+.lesson-topbar-title{flex:1;font-size:.95rem;font-weight:600;text-align:center;}
+.lesson-view-body{flex:1;max-width:780px;width:100%;margin:0 auto;padding:2.5rem 2rem 8rem;}
+.lesson-header{margin-bottom:2.5rem;}
+.lesson-chapter-label{font-size:.75rem;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.6rem;}
+.lesson-main-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;line-height:1.3;margin-bottom:1rem;}
+.lesson-objective{padding:1.2rem 1.5rem;background:var(--surface);border-right:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:.9rem;color:var(--text-dim);line-height:1.7;}
+.lesson-objective strong{color:var(--gold);}
+
+/* LESSON CONTENT */
+.lesson-content{margin-top:2.5rem;line-height:1.9;}
+.lesson-content h3{font-size:1.05rem;font-weight:700;color:var(--gold);margin:2rem 0 .8rem;display:flex;align-items:center;gap:.5rem;}
+.lesson-content p{font-size:.95rem;color:#CDD0D9;margin-bottom:1rem;line-height:1.9;}
+.lesson-content ul{margin:.5rem 0 1.2rem 0;padding-right:1.5rem;}
+.lesson-content ul li{font-size:.95rem;color:#CDD0D9;margin-bottom:.6rem;line-height:1.7;}
+.hbox{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin:1.2rem 0;}
+.hbox.gold{background:var(--gold-dim);border-color:rgba(201,168,76,.2);}
+.hbox p{margin-bottom:.6rem;font-size:.9rem;color:#CDD0D9;line-height:1.7;}
+.hbox p:last-child{margin-bottom:0;}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0;}
+.cmp-item{padding:1.1rem;border-radius:10px;font-size:.88rem;line-height:1.6;}
+.cmp-item.bad{background:var(--red-dim);border:1px solid var(--red-border);}
+.cmp-item.good{background:rgba(45,106,79,.15);border:1px solid rgba(82,183,136,.3);}
+.cmp-lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;font-weight:700;}
+.cmp-item.bad .cmp-lbl{color:var(--red-text);}
+.cmp-item.good .cmp-lbl{color:var(--green-light);}
+.dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1.2rem 0;}
+.dim-item{padding:1rem 1.1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;}
+.dim-item:hover{border-color:rgba(201,168,76,.3);}
+.dim-num{font-size:.7rem;color:var(--gold);font-weight:700;margin-bottom:.3rem;}
+.dim-name{font-size:.9rem;font-weight:600;margin-bottom:.2rem;}
+.dim-desc{font-size:.8rem;color:var(--text-dim);line-height:1.5;}
+
+/* EXERCISE */
+.exercise-wrap{margin-top:3rem;border:1px solid rgba(201,168,76,.22);border-radius:var(--radius);overflow:hidden;}
+.ex-header{background:var(--gold-dim);padding:1.2rem 1.8rem;border-bottom:1px solid rgba(201,168,76,.18);display:flex;align-items:flex-start;gap:.8rem;}
+.ex-badge{background:var(--gold);color:#0F1117;padding:.28rem .7rem;border-radius:6px;font-size:.72rem;font-weight:800;white-space:nowrap;margin-top:.15rem;}
+.ex-badge.b{background:var(--cc-blue);}
+.ex-badge.c{background:var(--green);}
+.ex-meta{flex:1;}
+.ex-title{font-size:1rem;font-weight:700;margin-bottom:.3rem;}
+.ex-desc{font-size:.84rem;color:var(--text-dim);line-height:1.6;}
+.ex-body{padding:1.8rem;}
+.ex-step{margin-bottom:1.8rem;}
+.step-lbl{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-weight:600;}
+.step-n{width:22px;height:22px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--gold);flex-shrink:0;}
+.prompt-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem;position:relative;}
+.activity-block{background:rgba(74,144,217,.04);border:1px solid rgba(74,144,217,.18);border-radius:10px;padding:1.1rem 1.3rem;}
+.activity-text{font-size:.87rem;color:#CDD0D9;line-height:1.85;white-space:pre-wrap;direction:rtl;}
+.rounds-instr{font-size:.8rem;color:var(--gold);font-weight:600;margin-bottom:.8rem;padding:.5rem .8rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,.2);border-radius:7px;}
+.round-item{margin-bottom:1rem;}
+.round-label{font-size:.8rem;font-weight:700;color:var(--cc-blue);margin-bottom:.4rem;padding:.3rem .6rem;background:var(--cc-blue-dim);border-radius:5px;display:inline-block;}
+.prompt-text{font-size:.88rem;color:#CDD0D9;line-height:1.75;white-space:pre-wrap;direction:rtl;padding-left:4rem;}
+.copy-btn{position:absolute;top:.8rem;left:.8rem;display:flex;align-items:center;gap:.35rem;padding:.38rem .75rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);font-family:'Tajawal',sans-serif;font-size:.75rem;cursor:pointer;transition:all .2s;}
+.copy-btn:hover{border-color:var(--gold);color:var(--gold);}
+.copy-btn.copied{border-color:var(--green-light);color:var(--green-light);}
+.res-area{width:100%;min-height:95px;padding:.9rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;resize:vertical;outline:none;direction:rtl;transition:border-color .2s;}
+.res-area:focus{border-color:var(--gold);}
+.ex-divider{display:flex;align-items:center;gap:1rem;margin:1.2rem 0;}
+.ex-divider::before,.ex-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.ex-divider span{font-size:.8rem;color:var(--text-dim);white-space:nowrap;}
+.reflect-area{width:100%;min-height:80px;padding:.9rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;resize:vertical;outline:none;direction:rtl;transition:border-color .2s;margin-top:.6rem;}
+.reflect-area:focus{border-color:var(--gold);}
+.btn-reveal{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.4rem;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text-dim);font-family:'Tajawal',sans-serif;font-size:.88rem;cursor:pointer;transition:all .2s;margin-top:.8rem;}
+.btn-reveal:hover{border-color:var(--green-light);color:var(--green-light);}
+.reveal-box{background:rgba(45,106,79,.1);border:1px solid rgba(82,183,136,.25);border-radius:10px;padding:1.4rem;display:none;animation:fadeUp .3s ease;margin-top:.8rem;}
+.reveal-box.visible{display:block;}
+.reveal-title{font-size:.78rem;color:var(--green-light);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-weight:700;}
+.reveal-content{font-size:.9rem;color:#CDD0D9;line-height:1.85;white-space:pre-wrap;}
+
+/* LESSON FOOTER */
+.lesson-footer{position:fixed;bottom:0;left:0;right:0;padding:1.1rem 2rem;background:rgba(15,17,23,.97);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;justify-content:center;}
+.btn-complete{display:flex;align-items:center;gap:.7rem;padding:.85rem 2.4rem;background:var(--gold);color:#0F1117;border:none;border-radius:var(--radius);font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-complete:hover{background:#d4b05e;transform:translateY(-1px);box-shadow:0 8px 24px var(--gold-glow);}
+.btn-complete.done{background:var(--green);color:var(--green-light);cursor:default;}
+
+/* FILE */
+.file-body{flex:1;max-width:800px;width:100%;margin:0 auto;padding:2.5rem 2rem;}
+.file-header{text-align:center;margin-bottom:3rem;}
+.file-title{font-size:2rem;font-weight:800;margin-bottom:.5rem;background:linear-gradient(135deg,#F5F5F5 0%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.file-subtitle{font-size:.9rem;color:var(--text-dim);}
+.file-entries{display:flex;flex-direction:column;gap:1rem;}
+.file-entry{padding:1.4rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);animation:fadeUp .3s ease;}
+.file-entry-chapter{font-size:.75rem;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.35rem;}
+.file-entry-lesson{font-size:1rem;font-weight:600;margin-bottom:.35rem;}
+.file-entry-date{font-size:.8rem;color:var(--text-dim);}
+.file-empty{text-align:center;padding:4rem 2rem;color:var(--text-dim);}
+
+/* CONTROL CENTER */
+#control-center{flex-direction:column;background:var(--cc-bg);}
+.cc-topbar{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--cc-border);background:var(--cc-surface);position:sticky;top:0;z-index:100;}
+.cc-brand{display:flex;align-items:center;gap:.8rem;font-size:1rem;font-weight:700;color:var(--cc-blue);}
+.cc-subtitle{font-size:.75rem;color:var(--text-dim);margin-top:.1rem;}
+.cc-body{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:2.5rem 2rem;}
+.cc-hero{margin-bottom:2.5rem;padding:2rem;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--radius);}
+.cc-hero-label{font-size:.75rem;color:var(--cc-blue);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.6rem;}
+.cc-hero-title{font-size:1.5rem;font-weight:800;margin-bottom:.5rem;}
+.cc-hero-desc{font-size:.9rem;color:var(--text-dim);line-height:1.7;}
+.cc-profile-row{display:flex;gap:1rem;align-items:flex-start;margin-top:1.2rem;flex-wrap:wrap;}
+.cc-profile-field{flex:1;min-width:180px;}
+.cc-profile-label{font-size:.75rem;color:var(--text-dim);margin-bottom:.4rem;}
+.cc-profile-select{width:100%;padding:.7rem 1rem;background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;}
+.cc-profile-select:focus{border-color:var(--cc-blue);}
+.cc-profile-select option{background:var(--cc-surface);}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;}
+.tool-card{background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--radius);overflow:hidden;transition:all .25s;}
+.tool-card:hover{border-color:rgba(74,144,217,.4);box-shadow:0 8px 32px rgba(0,0,0,.3);}
+.tool-card.locked{opacity:.5;pointer-events:none;}
+.tool-header{padding:1.4rem;border-bottom:1px solid var(--cc-border);display:flex;align-items:flex-start;gap:1rem;}
+.tool-icon{width:42px;height:42px;border-radius:10px;background:var(--cc-blue-dim);border:1px solid var(--cc-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tool-info{flex:1;}
+.tool-name{font-size:1rem;font-weight:700;margin-bottom:.25rem;}
+.tool-desc{font-size:.82rem;color:var(--text-dim);line-height:1.5;}
+.tool-lock{font-size:.7rem;color:var(--text-dim);background:var(--cc-surface2);padding:.2rem .6rem;border-radius:99px;border:1px solid var(--border);white-space:nowrap;}
+.tool-body{padding:1.4rem;}
+.cc-lbl{font-size:.78rem;color:var(--text-dim);margin-bottom:.45rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+.cc-sel{width:100%;padding:.7rem 1rem;background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.88rem;outline:none;margin-bottom:1rem;transition:border-color .2s;}
+.cc-sel:focus{border-color:var(--cc-blue);}
+.cc-sel option{background:var(--cc-surface);}
+.cc-ta{width:100%;min-height:85px;padding:.9rem 1rem;background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.88rem;resize:vertical;outline:none;direction:rtl;transition:border-color .2s;margin-bottom:1rem;}
+.cc-ta:focus{border-color:var(--cc-blue);}
+.btn-cc{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.5rem;background:var(--cc-blue);color:#fff;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-cc:hover{background:#5a9fd4;box-shadow:0 4px 16px var(--cc-blue-glow);}
+.cc-out{background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;padding:1.1rem;margin-top:1rem;font-size:.87rem;color:#CDD0D9;line-height:1.8;display:none;white-space:pre-wrap;direction:rtl;position:relative;}
+.cc-out.visible{display:block;animation:fadeUp .3s ease;}
+.cc-copy{position:absolute;top:.7rem;left:.7rem;display:flex;align-items:center;gap:.3rem;padding:.35rem .7rem;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:6px;color:var(--cc-blue);font-family:'Tajawal',sans-serif;font-size:.72rem;cursor:pointer;transition:all .2s;}
+.cc-copy:hover{background:var(--cc-blue-dim);}
+.check-list{display:flex;flex-direction:column;gap:.55rem;margin-top:.8rem;}
+.check-item{display:flex;align-items:flex-start;gap:.8rem;padding:.75rem 1rem;background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;cursor:pointer;transition:all .2s;}
+.check-item:hover{border-color:rgba(74,144,217,.4);}
+.check-item.checked{background:rgba(74,144,217,.08);border-color:rgba(74,144,217,.4);}
+.check-box{width:18px;height:18px;border-radius:4px;border:2px solid var(--cc-border);flex-shrink:0;margin-top:.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.check-item.checked .check-box{background:var(--cc-blue);border-color:var(--cc-blue);}
+.check-txt{font-size:.85rem;color:var(--text-dim);line-height:1.5;}
+.check-item.checked .check-txt{color:var(--text);}
+.risk-out{display:none;margin-top:1rem;animation:fadeUp .3s ease;}
+.risk-out.visible{display:block;}
+.risk-lvl{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:99px;font-size:.78rem;font-weight:700;margin-bottom:.7rem;}
+.r-low{background:rgba(82,183,136,.15);color:var(--green-light);border:1px solid rgba(82,183,136,.3);}
+.r-med{background:rgba(255,193,7,.1);color:#FFC107;border:1px solid rgba(255,193,7,.3);}
+.r-high{background:rgba(220,53,69,.1);color:#E07070;border:1px solid rgba(220,53,69,.3);}
+.drift-out{display:none;background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;padding:1.2rem;margin-top:1rem;animation:fadeUp .3s ease;}
+.drift-out.visible{display:block;}
+
+/* TOAST */
+.toast{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--surface);border:1px solid var(--gold);color:var(--text);padding:.85rem 1.7rem;border-radius:var(--radius);font-size:.9rem;font-weight:500;z-index:9999;transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:.7rem;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── LESSON 1-5 GUIDED BUILDER ─── */
+.phase-block{margin-bottom:1.8rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.phase-header{display:flex;align-items:flex-start;gap:.8rem;padding:1.1rem 1.5rem;background:var(--surface2);}
+.phase-num{width:28px;height:28px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:var(--gold);flex-shrink:0;margin-top:.1rem;}
+.phase-title{font-size:.95rem;font-weight:700;}
+.phase-subtitle{font-size:.8rem;color:var(--text-dim);margin-top:.15rem;line-height:1.5;}
+.phase-body{padding:1.5rem;}
+.guided-q{margin-bottom:1.3rem;}
+.guided-q-label{font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:.25rem;}
+.guided-q-hint{font-size:.78rem;color:var(--text-dim);margin-bottom:.45rem;line-height:1.5;}
+.guided-input{width:100%;padding:.72rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;outline:none;direction:rtl;transition:border-color .2s;}
+.guided-input:focus{border-color:var(--gold);}
+.guided-ta{width:100%;min-height:65px;padding:.72rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;resize:vertical;outline:none;direction:rtl;transition:border-color .2s;}
+.guided-ta:focus{border-color:var(--gold);}
+.btn-build{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.8rem;background:var(--gold);color:#0F1117;border:none;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:.4rem;}
+.btn-build:hover{background:#d4b05e;box-shadow:0 4px 16px var(--gold-glow);}
+.built-wrap{display:none;margin-top:1.3rem;animation:fadeUp .3s ease;}
+.built-wrap.visible{display:block;}
+.built-label{font-size:.75rem;color:var(--green-light);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:.7rem;}
+.built-compare{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.bc-col-lbl{font-size:.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem;font-weight:600;}
+.bc-answers{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem;font-size:.82rem;color:var(--text-dim);line-height:1.8;direction:rtl;min-height:80px;}
+.bc-prompt{background:var(--surface);border:1px solid rgba(201,168,76,.25);border-radius:8px;padding:1rem 1rem 1rem 3.8rem;font-size:.84rem;color:#CDD0D9;line-height:1.8;white-space:pre-wrap;direction:rtl;position:relative;}
+.bc-copy{position:absolute;top:.65rem;left:.65rem;display:flex;align-items:center;gap:.3rem;padding:.35rem .65rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);font-family:'Tajawal',sans-serif;font-size:.72rem;cursor:pointer;transition:all .2s;}
+.bc-copy:hover{border-color:var(--gold);color:var(--gold);}
+.phase2-locked{display:none;padding:1.4rem;text-align:center;color:var(--text-dim);font-size:.88rem;border-radius:var(--radius);}
+.phase2-locked.visible{display:block;animation:fadeUp .3s ease;}
+.eval-crit-list{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.2rem;}
+.eval-crit-item{display:flex;align-items:flex-start;gap:.8rem;padding:.8rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;}
+.eval-crit-item:hover{border-color:rgba(82,183,136,.3);}
+.eval-crit-item.checked{background:rgba(45,106,79,.1);border-color:rgba(82,183,136,.35);}
+.eval-crit-box{width:20px;height:20px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;margin-top:.15rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.eval-crit-item.checked .eval-crit-box{background:var(--green);border-color:var(--green-light);}
+.eval-crit-body strong{display:block;font-size:.87rem;margin-bottom:.15rem;}
+.eval-crit-body span{font-size:.79rem;color:var(--text-dim);line-height:1.5;}
+.eval-score-box{display:none;padding:1.2rem 1.4rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,.25);border-radius:10px;animation:fadeUp .3s ease;}
+.eval-score-box.visible{display:block;}
+.eval-score-num{font-size:2.2rem;font-weight:800;color:var(--gold);font-family:'Cairo',sans-serif;}
+.eval-score-msg{font-size:.88rem;color:#CDD0D9;line-height:1.75;margin-top:.6rem;white-space:pre-line;}
+.phase3-locked{display:none;padding:1.4rem;text-align:center;color:var(--text-dim);font-size:.88rem;}
+.phase3-locked.visible{display:block;animation:fadeUp .3s ease;}
+@media(max-width:640px){
+  .dashboard-body,.chapter-view-body,.lesson-view-body,.file-body,.cc-body{padding:1.5rem 1rem;}
+  .topbar,.chapter-topbar,.lesson-topbar,.cc-topbar{padding:1rem;}
+  .cmp-grid,.dim-grid{grid-template-columns:1fr;}
+  .welcome-stats{gap:1rem;}
+  .tools-grid{grid-template-columns:1fr;}
+  .cc-profile-row{flex-direction:column;}
+  .challenge-actions{flex-direction:column;}
+  .built-compare{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div id="welcome" class="screen active">
+  <div class="welcome-bg"></div><div class="welcome-grid"></div>
+  <div class="welcome-content">
+    <div class="brand-mark">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <rect x="6" y="6" width="10" height="10" rx="2" fill="#C9A84C"/>
+        <rect x="20" y="6" width="10" height="10" rx="2" fill="#C9A84C" opacity=".5"/>
+        <rect x="6" y="20" width="10" height="10" rx="2" fill="#C9A84C" opacity=".5"/>
+        <rect x="20" y="20" width="10" height="10" rx="2" fill="#C9A84C"/>
+      </svg>
+    </div>
+    <div class="welcome-title">غرفة القرار</div>
+    <div class="welcome-sub">منصة التحول القيادي في الذكاء الاصطناعي</div>
+    <p class="welcome-desc">من مستخدم عشوائي إلى شريك استراتيجي واعٍ.<br>ثلاثة أبواب. أربعة عشر درساً. تحول حقيقي.</p>
+    <div class="name-input-group">
+      <input type="text" class="name-input" id="user-name-input" placeholder="اكتب اسمك للبدء..."/>
+      <button class="btn-primary" onclick="enterDashboard()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        ادخل غرفة القرار
+      </button>
+    </div>
+    <div class="welcome-stats">
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">أبواب</div></div>
+      <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">درساً</div></div>
+      <div class="stat-item"><div class="stat-num">100</div><div class="stat-label">مستوى نفوذ</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="screen">
+  <div class="topbar">
+    <div class="topbar-brand" onclick="showDashboard()">
+      <svg width="22" height="22" viewBox="0 0 36 36" fill="none"><rect x="6" y="6" width="10" height="10" rx="2" fill="#C9A84C"/><rect x="20" y="6" width="10" height="10" rx="2" fill="#C9A84C" opacity=".5"/><rect x="6" y="20" width="10" height="10" rx="2" fill="#C9A84C" opacity=".5"/><rect x="20" y="20" width="10" height="10" rx="2" fill="#C9A84C"/></svg>
+      غرفة القرار
+    </div>
+    <div class="topbar-actions">
+      <span class="topbar-user">مرحباً، <span id="display-name">القائد</span></span>
+      <button class="btn-topbar cc-btn" onclick="showCC()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        مركز التحكم
+      </button>
+      <button class="btn-topbar" onclick="showFile()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        ملف القائد
+      </button>
+    </div>
+  </div>
+  <div class="dashboard-body">
+    <div class="influence-section">
+      <div class="influence-header">
+        <div><div class="influence-title">مستوى النفوذ</div><div class="influence-label">يرتفع مع كل درس تكتمله</div></div>
+        <div style="text-align:left"><div class="influence-value" id="influence-num">0</div><div class="influence-label">/ 100</div></div>
+      </div>
+      <div class="influence-bar-track"><div class="influence-bar-fill" id="influence-bar"></div></div>
+      <div class="influence-ranks">
+        <div class="rank-badge" id="rank-0">مستخدم</div>
+        <div class="rank-badge" id="rank-1">ممارس</div>
+        <div class="rank-badge" id="rank-2">محترف</div>
+        <div class="rank-badge" id="rank-3">خبير</div>
+        <div class="rank-badge" id="rank-4">استراتيجي</div>
+      </div>
+    </div>
+    <div class="section-title">الأبواب التدريبية</div>
+    <div class="chapters-grid" id="chapters-grid"></div>
+  </div>
+</div>
+
+<!-- CHAPTER VIEW -->
+<div id="chapter-view" class="screen">
+  <div class="chapter-topbar">
+    <button class="btn-back" onclick="showDashboard()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>العودة</button>
+    <span id="ch-topbar-title" style="font-size:.9rem;color:var(--text-dim);flex:1;text-align:center;"></span>
+  </div>
+  <div class="chapter-view-body">
+    <div class="chapter-hero">
+      <div class="chapter-hero-num" id="cv-num"></div>
+      <div class="chapter-hero-title" id="cv-title"></div>
+      <div class="chapter-hero-goal" id="cv-goal"></div>
+    </div>
+    <div class="lessons-list" id="lessons-list"></div>
+    <div class="challenge-card" id="challenge-card">
+      <div class="challenge-label">🎯 الكرسي الدوار</div>
+      <div class="challenge-title" id="ch-title"></div>
+      <div class="challenge-desc" id="ch-desc"></div>
+      <textarea class="challenge-textarea" id="ch-answer" placeholder="اكتب إجابتك هنا..."></textarea>
+      <div class="challenge-actions">
+        <button class="btn-primary" onclick="submitChallenge()" style="justify-content:center;">تقديم الإجابة</button>
+        <button class="btn-eval" onclick="requestEval()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          احصل على تقييم من نموذج خارجي
+        </button>
+      </div>
+      <div class="eval-flow" id="eval-flow">
+        <div class="eval-step">
+          <div class="eval-step-label">الخطوة 1 — انسخ برومبت التقييم</div>
+          <div class="eval-prompt-box" id="eval-prompt-box">
+            <button class="eval-copy-btn" onclick="copyEvalPrompt()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              نسخ
+            </button>
+            <div id="eval-prompt-text"></div>
+          </div>
+        </div>
+        <div class="eval-step">
+          <div class="eval-step-label">الخطوة 2 — الصق النتيجة هنا بعد تشغيله</div>
+          <textarea class="eval-result-area" id="eval-result-input" placeholder="الصق تقييم النموذج هنا..."></textarea>
+          <button class="btn-eval" onclick="showEvalResult()" style="margin-top:.5rem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            عرض التقييم
+          </button>
+          <div class="eval-result-display" id="eval-result-display"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LESSON VIEW -->
+<div id="lesson-view" class="screen">
+  <div class="lesson-topbar">
+    <button class="btn-back" onclick="showChapter(currentChapter)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>العودة</button>
+    <div class="lesson-topbar-title" id="lesson-topbar-title"></div>
+    <div style="width:80px"></div>
+  </div>
+  <div class="lesson-view-body">
+    <div class="lesson-header">
+      <div class="lesson-chapter-label" id="lv-ch-label"></div>
+      <div class="lesson-main-title" id="lv-title"></div>
+      <div class="lesson-objective" id="lv-obj"></div>
+    </div>
+    <div class="lesson-content" id="lv-content"></div>
+    <div id="lv-exercise"></div>
+  </div>
+  <div class="lesson-footer">
+    <button class="btn-complete" id="btn-complete" onclick="completeLesson()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="complete-btn-text">إتمام الدرس</span>
+    </button>
+  </div>
+</div>
+
+<!-- FILE VIEW -->
+<div id="file-view" class="screen">
+  <div class="chapter-topbar">
+    <button class="btn-back" onclick="showDashboard()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>العودة</button>
+    <span style="font-size:.95rem;font-weight:600;flex:1;text-align:center;">ملف القائد</span>
+    <div style="width:80px"></div>
+  </div>
+  <div class="file-body">
+    <div class="file-header">
+      <div class="file-title" id="file-name"></div>
+      <div class="file-subtitle">سجل إنجازاتك وتحولاتك</div>
+    </div>
+    <div class="file-entries" id="file-entries"></div>
+  </div>
+</div>
+
+<!-- CONTROL CENTER -->
+<div id="control-center" class="screen">
+  <div class="cc-topbar">
+    <div>
+      <div class="cc-brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        مركز التحكم
+      </div>
+      <div class="cc-subtitle">بيئة العمل الشخصية — هندسة · تدقيق · تصحيح</div>
+    </div>
+    <button class="btn-back" onclick="showDashboard()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>العودة للتعلم</button>
+  </div>
+  <div class="cc-body">
+    <div class="cc-hero">
+      <div class="cc-hero-label">هويتك المهنية</div>
+      <div class="cc-hero-title">اضبط هويتك — تتحسن الأدوات معك</div>
+      <div class="cc-hero-desc">كلما حددت طبيعة عملك، كلما أصبحت البرومبتات أدق وأكثر توافقاً مع احتياجاتك الفعلية.</div>
+      <div class="cc-profile-row">
+        <div class="cc-profile-field"><div class="cc-profile-label">مجال العمل</div>
+          <select class="cc-profile-select" id="cc-field" onchange="saveProfile()">
+            <option value="">اختر...</option><option value="consulting">استشارات وتدريب</option>
+            <option value="startup">ريادة أعمال</option><option value="executive">قيادة تنفيذية</option>
+            <option value="marketing">تسويق واتصال</option><option value="operations">عمليات وتشغيل</option>
+            <option value="finance">مالية واستثمار</option>
+          </select>
+        </div>
+        <div class="cc-profile-field"><div class="cc-profile-label">الجمهور الأساسي</div>
+          <select class="cc-profile-select" id="cc-audience" onchange="saveProfile()">
+            <option value="">اختر...</option><option value="board">مجلس إدارة</option>
+            <option value="team">فريق تنفيذي</option><option value="clients">عملاء</option>
+            <option value="investors">مستثمرون</option><option value="mixed">متعدد</option>
+          </select>
+        </div>
+        <div class="cc-profile-field"><div class="cc-profile-label">صيغة الإخراج المفضلة</div>
+          <select class="cc-profile-select" id="cc-output" onchange="saveProfile()">
+            <option value="">اختر...</option><option value="table">جدول مقارن</option>
+            <option value="points">نقاط تنفيذية</option><option value="narrative">سرد تحليلي</option>
+            <option value="matrix">مصفوفة قرار</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="tools-grid">
+      <!-- Tool 1 -->
+      <div class="tool-card" id="tool-1">
+        <div class="tool-header">
+          <div class="tool-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A90D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <div class="tool-info"><div class="tool-name">مصمم البرومبت</div><div class="tool-desc">أدخل مهمتك — يولّد برومبتاً هندسياً جاهزاً للنسخ</div></div>
+        </div>
+        <div class="tool-body">
+          <div class="cc-lbl">نوع المهمة</div>
+          <select class="cc-sel" id="t1-task">
+            <option value="analysis">تحليل استراتيجي</option><option value="summary">تلخيص تنفيذي</option>
+            <option value="challenge">اختبار فرضية</option><option value="evaluate">تقييم قرار</option>
+            <option value="plan">تخطيط مبادرة</option><option value="review">مراجعة محتوى</option>
+          </select>
+          <div class="cc-lbl">صف مهمتك بجملة واحدة</div>
+          <textarea class="cc-ta" id="t1-ctx" placeholder="مثال: تحليل أسباب انخفاض معدل الاحتفاظ بالعملاء في الربع الأخير..."></textarea>
+          <button class="btn-cc" onclick="generatePrompt()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            توليد البرومبت
+          </button>
+          <div class="cc-out" id="t1-out">
+            <button class="cc-copy" onclick="copyCC('t1-out-text')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              نسخ
+            </button>
+            <div id="t1-out-text" style="padding-top:.3rem"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Tool 2 -->
+      <div class="tool-card" id="tool-2">
+        <div class="tool-header">
+          <div class="tool-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A90D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div class="tool-info"><div class="tool-name">مدقق المخرجات</div><div class="tool-desc">الصق نتيجة من أي نموذج — يشخّص المخاطر</div></div>
+          <div class="tool-lock" id="tool-2-lock">يُفتح بعد الباب الأول</div>
+        </div>
+        <div class="tool-body">
+          <div class="cc-lbl">الصق المخرج للتدقيق</div>
+          <textarea class="cc-ta" id="t2-content" placeholder="الصق هنا نتيجة الذكاء الاصطناعي..."></textarea>
+          <div class="cc-lbl">قائمة فحص</div>
+          <div class="check-list" id="t2-checks">
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-txt">أرقام أو إحصاءات محددة بدون مصدر</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-txt">استنتاجات قاطعة دون ذكر شروط أو قيود</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-txt">حلول نمطية متكررة بدون تحليل سياقك</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-txt">لم يعترض على أي افتراض في طلبك</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-txt">الإجابة تخرج عن نطاق ما طلبته</div></div>
+          </div>
+          <button class="btn-cc" style="margin-top:1rem" onclick="auditOutput()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            تشغيل التدقيق
+          </button>
+          <div class="risk-out" id="t2-risk"><div id="t2-risk-lvl"></div><div id="t2-risk-txt" style="font-size:.88rem;color:#CDD0D9;line-height:1.7"></div></div>
+        </div>
+      </div>
+      <!-- Tool 3 -->
+      <div class="tool-card" id="tool-3">
+        <div class="tool-header">
+          <div class="tool-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A90D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg></div>
+          <div class="tool-info"><div class="tool-name">مصحح الانحراف</div><div class="tool-desc">حواري انحرف؟ يولّد برومبت إعادة ضبط فوري</div></div>
+          <div class="tool-lock" id="tool-3-lock">يُفتح بعد الباب الثاني</div>
+        </div>
+        <div class="tool-body">
+          <div class="cc-lbl">ما كان هدفك الأصلي؟</div>
+          <textarea class="cc-ta" id="t3-goal" placeholder="مثال: تحليل أسباب انخفاض المبيعات..."></textarea>
+          <div class="cc-lbl">ملخص آخر رد من النموذج</div>
+          <textarea class="cc-ta" id="t3-last" placeholder="مثال: بدأ يقترح حلولاً بدل التحليل..."></textarea>
+          <div class="cc-lbl">نوع الانحراف</div>
+          <select class="cc-sel" id="t3-type">
+            <option value="topic">انحراف موضوعي — غيّر الزاوية</option>
+            <option value="depth">انحراف عمق — أصبح سطحياً</option>
+            <option value="solution">قفز للحلول قبل الأوان</option>
+            <option value="repeat">يكرر ما قيل سابقاً</option>
+          </select>
+          <button class="btn-cc" onclick="fixDrift()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+            توليد برومبت الإصلاح
+          </button>
+          <div class="drift-out" id="t3-out">
+            <div style="font-size:.75rem;color:var(--cc-blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-weight:600;">برومبت إعادة الضبط — انسخه والصقه الآن</div>
+            <div id="t3-out-text" style="font-size:.87rem;color:#CDD0D9;line-height:1.8;white-space:pre-wrap;direction:rtl"></div>
+            <button class="cc-copy" style="position:relative;top:auto;left:auto;margin-top:.8rem;display:inline-flex" onclick="copyCC('t3-out-text')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              نسخ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- ── PROMPT LIBRARY PANEL ── -->
+      <div style="margin-top:2rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.8rem">
+          <div>
+            <div style="font-size:1rem;font-weight:700">📚 مكتبة البرومبتات</div>
+            <div style="font-size:.8rem;color:var(--text-dim);margin-top:.15rem">البرومبتات التي بنيتها وحفظتها من الدرس الخامس</div>
+          </div>
+          <button onclick="refreshCCLibrary()" style="display:flex;align-items:center;gap:.4rem;padding:.45rem 1rem;background:var(--cc-blue-dim);border:1px solid var(--cc-border);border-radius:8px;color:var(--cc-blue);font-family:'Tajawal',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(74,144,217,.22)'" onmouseout="this.style.background='var(--cc-blue-dim)'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+            تحديث
+          </button>
+        </div>
+        <div id="cc-lib-list"></div>
+      </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-text"></span>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// EXERCISES DATA  — raw text stored for clean copy
+// ══════════════════════════════════════════════════════
+const EX = {
+"1-1":{
+  type:"أ",typeLabel:"مقارنة مباشرة",
+  title:"جرّب الفرق بنفسك — سؤال عادي مقابل برومبت هندسي",
+  desc:"خذ البرومبت السطحي أدناه، الصقه في أي نموذج ذكاء اصطناعي تختاره، وانقل النتيجة هنا. ثم كرر العملية مع البرومبت الهندسي. الهدف: رؤية الفرق بعينيك لا بقراءة وصفه.",
+  p1:`كيف أحسّن أداء فريقي؟`,
+  p2:`بصفتك مستشار تطوير تنظيمي متخصص في بيئات القيادة:
+
+الهدف: حلّل الأسباب الجذرية المحتملة لضعف أداء الفريق بناءً على المعطيات التالية:
+- فريق من 8 أشخاص في شركة خدمات
+- انخفض الإنتاج 30% خلال الربع الأخير
+- لا توجد تغييرات في الهيكل التنظيمي
+
+القيود:
+- لا تقترح حلولاً في هذه المرحلة
+- ركّز على الأسباب التشغيلية والهيكلية فقط
+- لا تفترض بيانات غير مذكورة
+
+الإخراج: جدول بـ 5 أسباب محتملة، مع مستوى الأثر لكل منها (عالٍ / متوسط / منخفض)`,
+  reflect:"ما الفرق الجوهري الذي لاحظته بين الردين؟",
+  reveal:`ما يجب أن تكون لاحظته:
+
+• البرومبت السطحي أعطاك نصائح عامة جاهزة (تواصل، تحفيز، أهداف...) دون علاقة بحالتك
+• البرومبت الهندسي أجبر النموذج على التحليل المنظم قبل القفز للحلول
+• الجدول جعل النتيجة قابلة للاستخدام الفوري وللمقارنة
+• قيد "لا تقترح حلولاً" منع الانحراف المبكر
+
+هذا الفرق ليس في النموذج — بل في طريقة تصميم الطلب.`
+},
+"1-2":{
+  type:"ب",typeLabel:"بناء تدريجي",
+  title:"أضف بُعداً في كل جولة — وشاهد كيف تتحسن النتيجة",
+  desc:"أرسل البرومبت في المرحلة الأولى لأي نموذج. ثم أضف الأبعاد تدريجياً كما في المرحلة الثانية. الصق نتيجة كل مرحلة وقارن.",
+  p1:`اقترح طريقة لتحسين تجربة العميل في شركة خدمات.`,
+  p2:`هذا البرومبت جاهز — أرسله كما هو دون تعديل وقارن النتيجة بالبرومبت الأول.
+
+[الدور]: أنت مستشار تجربة عملاء متخصص في شركات الخدمات B2B
+
+[الهدف]: اقترح 3 تحسينات ذات أولوية عالية لتجربة العميل
+
+[السياق]: شركة خدمات مهنية، 200 عميل، معدل الاحتفاظ 68%، أبرز شكوى: بطء الاستجابة
+
+[القيود]: لا تقترح تقنيات تتطلب ميزانية كبيرة، ركّز على التغييرات التشغيلية
+
+[الجمهور]: مدير العمليات في اجتماع أسبوعي
+
+[الإخراج]: جدول — التحسين، الأثر المتوقع، وقت التنفيذ
+
+[العمق]: تطبيقي مباشر — لا نظريات
+
+[معيار النجاح]: كل تحسين قابل للتنفيذ خلال 30 يوماً`,
+  reflect:"ما البُعد الذي أحدث أكبر تغيير في جودة الرد؟ لماذا؟",
+  reveal:`ما يجب أن تكون لاحظته:
+
+• الرد الأول: عام ومتكرر، نفس الإجابة التي ستجدها في أي كتاب
+• الرد الثاني: مخصص، قابل للتنفيذ، مرتبط بالسياق المحدد
+
+الأبعاد الأكثر تأثيراً غالباً:
+- السياق: يمنع الإجابات النمطية
+- القيود: تجبر النموذج على الإبداع ضمن حدود واقعية
+- معيار النجاح: يضبط مستوى التطبيق
+
+الإطار الثماني ليس بيروقراطية — هو ضمان الجودة.`
+},
+"1-3":{
+  type:"ب",typeLabel:"بناء تدريجي",
+  title:"أدر حواراً من 3 جولات — وشاهد قيمة التضييق والتحقق",
+  desc:"أرسل الجولة الأولى لأي نموذج. بعد الرد — أرسل الجولة الثانية في نفس المحادثة. ثم الجولة الثالثة. الصق نتيجة الجولة الثالثة هنا.",
+  p1_instr:`ثلاث جولات في نفس المحادثة — أرسل كل واحدة بعد رد النموذج على السابقة`,
+  p1_rounds:[
+    {label:`الجولة 1 — الاستكشاف`, prompt:`حلّل التحديات الرئيسية التي تواجه شركات الخدمات المهنية في السوق السعودي حالياً.`},
+    {label:`الجولة 2 — التضييق`, prompt:`شكراً. الآن ركّز فقط على تحديات الاحتفاظ بالعملاء. استبعد تحديات التوظيف والتسويق تماماً.`},
+    {label:`الجولة 3 — التحقق`, prompt:`ما الافتراضات التي بنيت عليها هذا التحليل؟ وما نقاط الضعف المحتملة فيه؟`}
+  ],
+  p1:`حلّل التحديات الرئيسية التي تواجه شركات الخدمات المهنية في السوق السعودي حالياً.`,
+  p2_activity:true,
+  p2:`الصق نتيجة الجولة الثالثة هنا. لاحظ:
+- هل اعترف النموذج بافتراضات لم يذكرها في الجولة الأولى؟
+- هل تغيّرت درجة يقينه؟
+- هل أضاف تحفظات لم تكن موجودة في البداية؟`,
+  reflect:"ما الفرق بين جودة رد الجولة الأولى وجودة رد الجولة الثالثة؟",
+  reveal:`ما يجب أن تكون لاحظته:
+
+• الجولة الأولى: شاملة وعريضة — مفيدة لكن غير قابلة للتنفيذ مباشرة
+• الجولة الثانية: أعمق في زاوية محددة — أكثر تطبيقية
+• الجولة الثالثة: كشفت افتراضات كانت مخفية، وأضافت تحفظات مهمة
+
+هذا هو الفارق بين مستخدم سطحي ومستخدم محترف:
+المستخدم السطحي يأخذ الجولة الأولى ويغادر.
+المستخدم المحترف يبني حواراً مرحلياً يصل للعمق الحقيقي.`
+},
+"1-4":{
+  type:"أ",typeLabel:"مقارنة مباشرة",
+  title:"اكتشف الانحراف ثم أصلحه",
+  desc:"ابدأ محادثة بالجولات الأولى بدون ضبط، لاحظ الانحراف، ثم جرّب برومبت إعادة الضبط وشاهد الفرق.",
+  p1_instr:`أرسل الجولات الخمس بالترتيب في نفس المحادثة — جولة واحدة بعد كل رد`,
+  p1_rounds:[
+    {label:`الجولة 1`, prompt:`أريد تطوير استراتيجية تسعير لخدماتنا الاستشارية.`},
+    {label:`الجولة 2`, prompt:`تفصّل أكثر في النقطة الثالثة.`},
+    {label:`الجولة 3`, prompt:`ما رأيك في التسعير حسب القيمة؟`},
+    {label:`الجولة 4`, prompt:`كيف يقارن هذا بالمنافسين؟`},
+    {label:`الجولة 5`, prompt:`أضف أمثلة عملية.`}
+  ],
+  p1:`أريد تطوير استراتيجية تسعير لخدماتنا الاستشارية.`,
+  p2:`توقف. لخّص ما يلي في 5 نقاط فقط، ولا تضف معلومات جديدة:
+1. المشكلة الأصلية
+2. الهدف المتفق عليه
+3. أهم استنتاج توصلنا إليه
+4. النقطة الأكثر هشاشة في تحليلنا
+5. الخطوة التالية المنطقية
+
+بعد التلخيص — سنبدأ من هذه النقاط فقط.`,
+  reflect:"بعد رد إعادة الضبط: هل يبدو أن المحادثة عادت لمسارها؟ ما الذي كان مختلفاً؟",
+  reveal:`ما لاحظته له اسم — أنواع الانحراف الأربعة:
+
+• الانحراف الموضوعي: التحليل يتحول لزاوية لم تطلبها
+• انحراف العمق: يصبح سطحياً أو يغرق في تفاصيل غير ذات صلة
+• الانحراف التنفيذي: يعيد صياغة ما تم الاتفاق عليه بدلاً من التقدم
+• انحراف التوسع: يتوسع عمودياً في التفاصيل بدل التقدم نحو الهدف
+
+أيٌّ منها لاحظته في جولاتك؟
+
+القاعدة: كلما طالت المحادثة الاستراتيجية، زادت الحاجة للتلخيص المرحلي.
+في المشاريع الطويلة — أحياناً الأفضل فتح محادثة جديدة ونقل الملخص إليها.`
+},
+"1-5":{
+  type:"ج",typeLabel:"تطبيق على الواقع",
+  p1_instr:`تمرين ثلاثي المراحل: أولاً قارن برومبتاً ضعيفاً بهندسي جاهز، ثم ابنِ برومبتك الأول لمهمة حقيقية، ثم حسّنه.`,
+  title:"ابنِ أول برومبت في مكتبتك — بالحوار الموجّه",
+  desc:"تمرين من ثلاث مراحل: أولاً ترى الفرق بين البرومبت الضعيف والهندسي على مهمة جاهزة. ثانياً تبني برومبتك الأول لمهمة حقيقية من عملك بأسئلة موجّهة. ثالثاً تقيّمه بمعايير موضوعية.",
+  p1:`برومبت ضعيف — أرسله لأي نموذج كما هو:
+
+"لخّص لي اجتماع الفريق وأعطني أهم النقاط."
+
+الصق النتيجة في الخانة أدناه.`,
+  p2:`هذا البرومبت جاهز — أرسله كما هو ولاحظ كيف يختلف الرد عن البرومبت الأول.
+
+برومبت هندسي لنفس المهمة — انسخه وأرسله:
+
+[الدور]: أنت مساعد تنفيذي متخصص في توثيق الاجتماعات القيادية.
+
+[الهدف]: لخّص محضر الاجتماع المُدخَل واستخرج المخرجات القابلة للتنفيذ.
+
+[السياق]: اجتماع فريق تنفيذي، المدة 60 دقيقة، الحاضرون مدراء أقسام.
+
+[القيود]:
+- لا تُدرج النقاشات الجانبية أو التعليقات غير القرارية
+- لا تفترض توافقاً على نقطة لم تُصوَّت عليها صراحةً
+
+[الجمهور]: مدير عام يريد متابعة سريعة دون قراءة المحضر كاملاً
+
+[الإخراج]: جدولان — الأول: القرارات مع المسؤول والموعد. الثاني: النقاط المعلّقة مع السبب.
+
+[العمق]: تنفيذي مباشر — لا تحليل، لا تفسير
+
+[معيار النجاح]: المدير العام يستطيع متابعة كل قرار بسؤال واحد بعد قراءة الجدول
+
+الصق نتيجة هذا البرومبت أدناه وقارنها بالأول.`,
+  reflect:"ما البرومبت الذي ستضعه أولاً في مكتبتك — ولماذا هو الأكثر تكراراً في عملك؟",
+  reveal:`ما يجب أن تكون لاحظته:
+
+• البرومبت الضعيف: ملخص عام، أسلوب تقريري، لا هيكل، لا قابلية للمتابعة
+• البرومبت الهندسي: جدولان قابلان للاستخدام الفوري، فصل بين القرارات والمعلّق، موجّه لجمهور محدد
+
+الفرق ليس في طول البرومبت — بل في وضوح:
+من سيستخدم النتيجة؟ وكيف سيستخدمها؟
+
+هذان السؤالان هما جوهر الأبعاد الثمانية.`
+},
+"2-1":{
+  type:"أ",typeLabel:"مقارنة مباشرة",
+  title:"اكتشف الهلوسة بنفسك",
+  desc:"أرسل البرومبت الأول بدون أي إضافة. لاحظ الرد. ثم أرسل البرومبت الثاني في نفس المحادثة للتحقق.",
+  p1:`ما معدل الاحتفاظ بالعملاء في شركات الاستشارات الإدارية في السوق السعودي عام 2024؟ أعطني أرقاماً دقيقة مع مقارنة بالمعدلات العالمية.`,
+  p2:`ما المصادر التي استندت إليها في هذه الأرقام؟ هل يمكن أن تكون هذه الإحصاءات مُخترعة أو تقديرية؟ ما مستوى ثقتك في دقتها؟`,
+  reflect:"كيف تغير أسلوب النموذج بين الرد الأول والثاني؟",
+  reveal:`ما يجب أن تكون لاحظته:
+
+الرد الأول: أرقام محددة (مثل 78% أو 82%) بصياغة واثقة — كأنها حقائق موثقة
+الرد الثاني: تراجع ملحوظ — "هذه تقديرات"، "لا أملك بيانات دقيقة"، "أنصح بمراجعة مصادر متخصصة"
+
+هذا هو نمط الهلوسة تماماً:
+ثقة عالية في رد أول + تراجع عند الضغط = معلومة لم تكن موثوقة أصلاً
+
+القاعدة الذهبية: أي رقم محدد بلا مصدر من AI = افترض أنه تقدير حتى تتحقق.
+قبل أي اجتماع أو تقرير — تحقق من الأرقام من مصادرها الأصلية.`
+},
+"2-2":{
+  type:"أ",typeLabel:"مقارنة مباشرة",
+  title:"شخّص الانحياز — اطلب التأكيد ثم اطلب الاعتراض",
+  desc:"أرسل البرومبت الأول. لاحظ طبيعة الرد. ثم أرسل البرومبت الثاني في نفس المحادثة وقارن الردين.",
+  p1:`نريد التوسع في السوق الإماراتي. هل هذا قرار استراتيجي سليم؟`,
+  p2:`الآن العب دور المحامي الشيطان. اعترض على هذا القرار واذكر الأسباب التي قد تجعله يفشل. كن صريحاً ولا تتحفظ.`,
+  reflect:"لماذا يميل النموذج للتأكيد في الرد الأول؟ ما أثر ذلك على القرار؟",
+  reveal:`ما يجب أن تكون لاحظته:
+
+الرد الأول: انحياز إيجابي — يرى فرصة، يؤكد القرار، يذكر عوامل النجاح
+الرد الثاني: يكشف مخاطر حقيقية لم تُذكر — تكاليف، منافسة، تحديات تنظيمية
+
+هذا هو نمط الانحياز في الذكاء الاصطناعي:
+يميل لموافقة الإطار الذي تقدمه — إذا سألته عن التوسع كـ"قرار استراتيجي سليم" فهو يفترض أنك تريد تأكيداً.
+
+الحل الاحترافي: في كل قرار مهم — اطلب دائماً الاعتراض بعد التأكيد.
+القرار الجيد يصمد أمام المحامي الشيطان — لا أمام المؤيد فقط.`
+},
+"2-3":{
+  type:"ج",typeLabel:"تطبيق على الواقع",
+  title:"طبّق مصفوفة المخاطر على تحليل حقيقي من مجالك",
+  desc:"اطلب تحليلاً استراتيجياً من أي نموذج بناءً على مهمة حقيقية عندك، ثم طبّق عليه مصفوفة المخاطر الأربعة قبل اعتماده.",
+  p1:`امسح الخانات المربعة [] واستبدلها بمعلوماتك قبل النسخ:
+
+حلّل [اكتب مهمتك أو فرصتك الاستراتيجية — مثال: توسع في سوق جديد / إطلاق خدمة / تطوير منتج] في مجال [اكتب مجالك — مثال: الاستشارات / التعليم / التقنية].
+قدّم: التحديات الرئيسية، الفرص المتاحة، والخطوات التنفيذية المقترحة.`,
+  p2_activity:true,
+  p2_matrix:[
+    `مخاطر معرفية: هل يحتوي بيانات ناقصة أو افتراضات غير مذكورة؟`,
+    `مخاطر تشغيلية: هل ستنفّذ قراراً بناءً على هذا التحليل مباشرة؟`,
+    `مخاطر مالية: هل الأرقام والتوقعات مبنية على أساس موثق؟`,
+    `مخاطر سمعة: هل ستشارك هذا التحليل مع عميل أو مجلس إدارة؟`
+  ],
+  p2:`ما الافتراضات التي بنيت عليها هذا التحليل؟ وما درجة ثقتك في كل افتراض من 1 إلى 5؟`,
+  reflect:"قبل وبعد سؤال الافتراضات — كيف تغيّرت ثقتك بالتحليل؟",
+  reveal:`الدرس الجوهري:
+
+الخطوة الأكثر قيمة التي ستأخذها من هذا الدرس:
+قبل اعتماد أي تحليل استراتيجي — اسأل دائماً:
+"ما الافتراضات التي بنيت عليها؟"
+
+هذا السؤال الواحد يكشف:
+- الهشاشة المخفية في التحليل
+- البيانات الناقصة التي لم تذكر
+- الأرقام التقديرية التي قُدِّمت كحقائق
+
+القاعدة: النموذج يحلل — القيادة تقرر. لا تخلط الدورين أبداً.`
+},
+"2-4":{
+  type:"ج",typeLabel:"تطبيق على الواقع",
+  title:"ابنِ بروتوكولك الأخلاقي الشخصي",
+  p_bridge:true,
+  p_bridge_label:"الصق إجاباتك على الأسئلة الثلاثة هنا — ستُدمج تلقائياً في البرومبت التالي",
+  desc:"شخّص واقعك أولاً، ثم اجعل النموذج يساعدك في بناء بروتوكول أخلاقي قابل للتطبيق الفعلي.",
+  p1_activity:true,
+  p1:`شخّص واقعك — أجب بصدق:
+
+آخر مرة استخدمت AI في قرار مهم: [اكتب ماذا كانت المهمة]
+هل تحققت من النتيجة قبل اعتمادها؟ نعم / لا / جزئياً
+هل يعلم فريقك أو عميلك أن المصدر AI؟ نعم / لا / لم أُخبرهم`,
+  p2:`[الصق هنا إجاباتك من النشاط الأول]
+
+بناءً على هذا التشخيص — أنا [اكتب مجالك ودورك الوظيفي].
+ساعدني في بناء بروتوكول استخدام AI أخلاقي شخصي في صفحة واحدة يجيب على:
+1. ما المهام التي أستخدم فيها AI بحرية كاملة؟
+2. ما المهام التي تتطلب إفصاحاً صريحاً لعميلي أو فريقي؟
+3. ما المهام التي تتطلب مراجعة بشرية إلزامية قبل الاعتماد؟
+4. ما المهام التي لن أستخدم AI فيها نهائياً؟
+كن محدداً وعملياً — لا مبادئ عامة فقط.`,
+  reflect:"هل غيّر هذا التمرين طريقة تفكيرك في أي قرار حالٍ عندك الآن؟",
+  reveal:`الإطار الأخلاقي في العمل اليومي:
+
+الشفافية: الإفصاح عن استخدام AI يبني الثقة لا يضرها
+النزاهة: "النموذج قال" ليست إجابة مقبولة أمام العميل أو المجلس
+العدالة: تحقق من التحيز خاصة في القرارات التي تمس الأفراد
+المساءلة: المسؤولية لا تنتقل — تبقى عندك دائماً
+
+القاعدة: كلما زادت حساسية القرار، زادت الحاجة للمراجعة البشرية.
+الذكاء الاصطناعي أداة — لا شريك في المسؤولية.`
+},
+"2-5":{
+  type:"ج",typeLabel:"تطبيق على الواقع",
+  title:"ابنِ بروتوكول الاستخدام الداخلي ثم اجعل النموذج يدقق فيه",
+  desc:"البروتوكول الجيد يُبنى بمساعدة النموذج نفسه — أرسل له مجالك وسياقك واجعله يبني الهيكل الأربعي معك.",
+  p_bridge:true,
+  p1:`امسح الخانات المربعة [] واستبدلها بمعلوماتك قبل النسخ:
+
+أنا [اكتب مجالك ودورك الوظيفي].
+أعمل في بيئة [اكتب: حكومية / خاصة / استشارية] وأتخذ قرارات تمس [اكتب: عملاء / موظفين / مجلس إدارة / عموم الناس].
+أنواع المهام الحساسة التي أواجهها يومياً: [اكتب مثالاً أو اثنين].
+
+بناءً على هذا السياق — ابنِ لي بروتوكول استخدام AI داخلي شخصي منظّم وفق الهيكل الأربعي:
+
+1. نطاق الاستخدام: ما المهام المسموح بها بحرية وما المحظورة تماماً؟
+2. مستويات الحساسية: كيف أصنّف مهامي (منخفض / متوسط / عالٍ) وما ضابط كل مستوى؟
+3. مسؤولية القرار: من يستخدم، من يراجع، من يعتمد؟
+4. توثيق الاستخدام: ما الذي يجب توثيقه وكيف؟
+
+اجعل البروتوكول محدداً بأمثلة من مجالي — لا مبادئ عامة. قصير وقابل للقراءة في 30 ثانية.`,
+  p2:`[الصق هنا البروتوكول الذي أنتجه النموذج من البرومبت الأول]
+
+راجع هذا البروتوكول الشخصي وحدد:
+1. الثغرات والحالات غير المغطاة
+2. التناقضات إن وُجدت
+3. الحالات التي تحتاج ضوابط إضافية
+كن ناقداً ومحدداً لا مجاملاً.`,
+  reflect:"ما الثغرة الأكثر أهمية التي اكتشفها النموذج في بروتوكولك؟",
+  reveal:`بروتوكول فعّال يجب أن يكون:
+
+✓ قصيراً — صفحة واحدة أقصاه
+✓ محدداً — يذكر أمثلة لا مبادئ عامة فقط
+✓ قابلاً للتطبيق — يمكن قراءته قبل أي مهمة في 30 ثانية
+✓ حياً — يتطور مع كل تجربة جديدة
+
+الخطوة التالية: احفظه في مكان تراه أسبوعياً.
+راجعه كل شهر وحدّثه بناءً على ما اكتشفته من تجاربك.`
+},
+"3-1":{
+  type:"ج",typeLabel:"تطبيق على الواقع",
+  title:"جرّب نموذجاً واحداً على مهمتين مختلفتي الطبيعة",
+  desc:"أرسل كلا البرومبتين لنفس النموذج. إن كان عندك وصول لنموذجين — جرّبهما معاً وقارن. إن لم يكن — افتح محادثتين منفصلتين بنفس النموذج.",
+  p1:`اكتب فقرة افتتاحية لعرض تقديمي لمنتج جديد في قطاع التقنية المالية موجه لمستثمرين. يجب أن تكون الفقرة ملهِمة، تحكي قصة، وتخلق إحساساً بالفرصة الاستثنائية.`,
+  p2:`قارن بين ثلاثة نماذج تسعير في قطاع التقنية المالية: الاشتراك الشهري، العمولة على المعاملة، والنموذج الهجين. قيّم كل نموذج وفق: الإيرادات المتوقعة، التعقيد التشغيلي، وسرعة الوصول للربحية. الإخراج: جدول مقارن مع توصية مبررة.`,
+  reflect:"بناءً على تجربتك: ما طبيعة المهام التي أعطاك فيها النموذج نتائج أضعف؟",
+  reveal:`ما يجب أن تكون لاحظته:
+
+النموذج الواحد يتفاوت في الأداء حسب طبيعة المهمة.
+المهام الإبداعية تحتاج: حرية في اللغة، سرد، إلهام
+المهام التحليلية تحتاج: منطق صارم، دقة، هيكل
+
+إذا جربت نموذجين مختلفين — ستلاحظ غالباً:
+بعض النماذج أقوى إبداعياً، وبعضها أقوى تحليلياً.
+
+هذا هو جوهر قرار اختيار النموذج:
+لا تسأل "أي نموذج أفضل؟"
+اسأل "ما طبيعة المهمة التي أمامي؟ وأي نموذج مصمم للتفوق فيها؟"`
+},
+"3-2":{
+  type:"ب",typeLabel:"بناء تدريجي",
+  title:"نفّذ سيناريو من 4 جولات على مهمة حقيقية",
+  desc:"اختر مهمة فعلية، حدد المهمة والنموذج، ثم نفّذ الجولات الأربع بالترتيب داخل نفس المحادثة.",
+  p1_activity:true,
+  p1:`حدد مهمتك قبل البدء:
+
+المهمة الدقيقة: [تحليل ماذا، لمن، بأي هدف؟]
+النموذج المختار: [اسمه + السبب]
+نقطة التحقق: [من يراجع النتيجة؟ كيف؟]`,
+  p1_instr:`الجولة 1: استبدل [مهمتك] ثم أرسل. الجولة 2: اقرأ الرد واختر الزاوية الأهم ثم استبدل الخانة. الجولة 3: أرسل كما هي. الجولة 4: استبدل [جمهورك] بناءً على هدفك.`,
+  p1_rounds:[
+    {label:`الجولة 1 — الاستكشاف`, prompt:`حلّل [اكتب مهمتك هنا] وافتح جميع الزوايا المحتملة دون تضييق.`},
+    {label:`الجولة 2 — التضييق`, prompt:`الآن ركّز فقط على [الزاوية الأهم من الجولة الأولى]. تجاهل الجوانب الأخرى.`},
+    {label:`الجولة 3 — التحقق`, prompt:`ما الافتراضات التي بنيت عليها تحليلك؟ وما درجة ثقتك في كل افتراض؟`},
+    {label:`الجولة 4 — التلخيص`, prompt:`لخّص النتائج في [3-5 نقاط] موجهة لـ [اكتب جمهورك المحدد]. لا تضف معلومات جديدة.`}
+  ],
+  p2_activity:true,
+  p2:`قيّم تجربتك بعد الجولات الأربع:
+
+- ما الجولة التي أضافت أكبر قيمة؟
+- ما الذي كان سيفوت لو شغّلت برومبتاً واحداً مباشرة؟
+- ما الذي ستعدّله في هذا السيناريو للمرة القادمة؟`,
+  reflect:"ما الجولة التي أضافت أكبر قيمة في سيناريوك — وما الذي كنت ستفوّته لو شغّلت عشوائياً؟",
+  reveal:`قيمة السيناريو المسبق:
+
+✓ يمنع التشتت ويوفر 30-40% من وقت التشغيل
+✓ يجعل النتائج قابلة للمقارنة بين جلسات مختلفة
+✓ نقطة التحقق تمنع اعتماد تحليل هش في قرار مهم
+✓ كلما كررت نفس السيناريو، كلما حسّنت البرومبتات تدريجياً
+
+السيناريو الجيد يصبح نمطاً قابلاً للحفظ في مكتبتك الشخصية.
+المشاريع المتكررة تحتاج سيناريوهات ثابتة — لا اختراعاً من الصفر كل مرة.`
+},
+"3-3":{
+  type:"أ",typeLabel:"مقارنة مباشرة",
+  title:"ابنِ جدول مقارنة النماذج الشخصي",
+  desc:"برومبت واحد يُنتج جدول مقارنة لأهم 8 غايات مقابل 5 نماذج. أرسله لأي نموذج عندك — وإن أمكن أرسله لاثنين ولاحظ كيف يقيّم كل منهما الآخر.",
+  p1:`قيّم أهم 8 غايات يستخدمها المديرون والاستشاريون في السعودية مقابل أبرز 5 نماذج ذكاء اصطناعي متاحة حالياً (Claude، GPT-4، Gemini، Copilot، Grok).
+
+أنتج الناتج في جدول واضح بالتنسيق التالي:
+- الصفوف: الغايات الثماني (رتّبها من الأكثر شيوعاً للأقل)
+- الأعمدة: النماذج الخمسة
+- التقييم: نجوم من 1 إلى 5 مع جملة تبرير واحدة لكل خلية
+
+بعد الجدول: أضف توصية واحدة — أي نموذج يناسب المدير السعودي كنموذج رئيسي وأي نموذج كمكمّل؟`,
+  p2_activity:true,
+  p2:`احتفظ بهذا الجدول — ستستخدمه في الدرس التالي.
+
+الآن لاحظ:
+- أي غاية تفاجأت بنتيجتها؟
+- هل يوجد نموذج تفوّق في غاية واحدة فقط أو في معظمها؟
+- إن أرسلت البرومبت لنموذج ثانٍ — كيف اختلف تقييمه لنفسه وللآخرين؟`,
+  reflect:"بناءً على الجدول — ما النموذج الذي ستعتمده رئيسياً ولماذا؟",
+  reveal:`ما تعلمته من جدول المقارنة:
+
+• لا يوجد "أفضل مطلق" — يوجد "أنسب لهذه الغاية"
+• النموذج الذي يقيّم نفسه يُظهر انحيازه — وهذا معلومة بحد ذاتها
+• الجدول يتغير مع كل تحديث للنماذج — أعد تشغيل البرومبت كل 3 أشهر
+• احتفظ بالجدول في مكتبتك — هو مرجعك لاختيار النموذج في الدرس التالي`
+},
+"3-4":{
+  type:"ج",typeLabel:"تطبيق على الواقع",
+  title:"قرر أين يصبح التوزيع الذكي مبرراً في مشروعك",
+  p_bridge:true,
+  p_bridge_label:"الصق توزيع النماذج الذي أكملته هنا — سيُدمج تلقائياً في البرومبت التالي",
+  desc:"خذ مشروعاً أو مبادرة حالية وقرر: هل يستحق استخدام نماذج مختلفة في مراحل مختلفة؟ أم أن نموذجاً واحداً يكفي؟",
+  p1_activity:true,
+  p1:`ارجع لجدول المقارنة الذي بنيته في الدرس السابق.
+اختر مشروعاً حالياً وقسّمه لـ 4 مراحل — لكل مرحلة اختر النموذج من الجدول:
+
+المرحلة 1 — التشخيص والتحليل:
+طبيعة المهمة: [منطقية / إبداعية / تقنية / تلخيصية]
+النموذج من الجدول: [اسمه + تقييمه في هذه الغاية]
+
+المرحلة 2 — بناء الإطار التنفيذي:
+طبيعة المهمة: [...]  |  النموذج من الجدول: [...]
+
+المرحلة 3 — المراجعة النقدية:
+طبيعة المهمة: [...]  |  النموذج من الجدول: [...]
+
+المرحلة 4 — إعداد التقرير أو العرض:
+طبيعة المهمة: [...]  |  النموذج من الجدول: [...]`,
+  p2:`[الصق هنا توزيع النماذج الذي أكملته في النشاط الأول]
+
+راجع هذا التوزيع: هل هو مبرر بناءً على جدول المقارنة؟ هل هناك مراحل يمكن دمجها في نموذج واحد؟ وأين يكون الهجين مبرراً فعلاً وأين يضيف تعقيداً غير ضروري؟`,
+  reflect:"في ضوء كل ما تعلمته — ما القاعدة الشخصية التي ستعتمدها في اختيار النموذج؟",
+  reveal:`متى يكون التوزيع الذكي مبرراً فعلاً:
+
+✓ عندما تكون الفروق في الجودة واضحة ومؤثرة على القرار
+✓ عندما تكون تكلفة النموذج القوي عبئاً في المراحل البسيطة
+✓ عندما تختلف متطلبات الأمان بين المراحل
+
+متى يكون مبالغاً فيه:
+✗ في المشاريع القصيرة أو المنخفضة المخاطر
+✗ عندما لا يتجاوز الفرق في الجودة 20%
+✗ عندما تكلفة الإدارة والتبديل تتجاوز الفائدة
+
+القاعدة النهائية: البساطة تخدم إذا كانت النتائج مقبولة.
+التعقيد مبرر فقط عندما يحقق فارقاً ملموساً في الجودة أو التكلفة.`
+}
+};
+
+// ══════════════════════════════════════════════════════
+// CURRICULUM
+// ══════════════════════════════════════════════════════
+const CHALLENGES = [
+  {
+    title:"تحدي الباب الأول: قيّم برومبت شخص آخر",
+    desc:"البرومبت التالي مُرسَل من مدير يريد تحليل سوقه:\n«ساعدني في فهم السوق وتحسين منتجنا»\n\nحدد: ما الأبعاد المفقودة من الأبعاد الثمانية؟ أعِد صياغته هندسياً بالكامل.",
+    criteria:`معايير التقييم للباب الأول:
+1. تحديد الأبعاد المفقودة (هل حدد 5 أبعاد أو أكثر من الثمانية؟)
+2. جودة الصياغة الهندسية (هل البرومبت المُعاد كتابته قابل للاستخدام فعلاً؟)
+3. وجود قيود واضحة (هل أضاف قيوداً تمنع الانحراف؟)
+4. تحديد صيغة الإخراج (هل وضّح شكل الناتج المطلوب؟)
+5. الفرق النوعي (هل البرومبت الجديد مختلف جوهرياً عن الأصلي؟)`
+  },
+  {
+    title:"تحدي الباب الثاني: قيّم تحليلاً بعيون ناقدة",
+    desc:"زميلك قدّم هذا التحليل جاهزاً من الذكاء الاصطناعي دون مراجعة:\n«السوق السعودي يشهد نمواً بمعدل 34% في قطاع الخدمات الرقمية، ويُتوقع أن تصل الإيرادات إلى 8.2 مليار ريال بنهاية 2025»\n\nحدد: ما المخاطر المحتملة؟ ما الأسئلة التي يجب طرحها قبل اعتماد هذه الأرقام في قرار استراتيجي؟",
+    criteria:`معايير التقييم للباب الثاني:
+1. تحديد نمط الخطأ (هل عرّف الهلوسة أو الثقة المفرطة أو الانحياز بدقة؟)
+2. تحديد المخاطر الأربعة (معرفية، تشغيلية، مالية، سمعة)
+3. جودة الأسئلة التحقيقية (هل الأسئلة عملية ومحددة لا عامة؟)
+4. اقتراح الضوابط (هل ذكر آلية مراجعة واضحة؟)
+5. الفصل بين التحليل والقرار (هل أكد أن المسؤولية تبقى عند الإنسان؟)`
+  },
+  {
+    title:"تحدي الباب الثالث: ابنِ مصفوفة قرار لمشروعك",
+    desc:"اختر مشروعاً أو مبادرة حالية تعمل عليها. قسّمها إلى 4 مهام رئيسية. لكل مهمة حدد: نوع النموذج الأنسب والمبرر. ثم قرّر: هل المشروع يحتاج نهجاً هجيناً أم نموذجاً واحداً؟",
+    criteria:`معايير التقييم للباب الثالث:
+1. دقة تصنيف المهام (هل ميّز بين المهام الإبداعية والتحليلية والتقنية؟)
+2. منطق اختيار النموذج (هل الاختيار مبني على خصائص المهمة لا على التفضيل الشخصي؟)
+3. مبرر النهج الهجين (إذا اختاره — هل الفرق في الجودة يبرر التعقيد؟)
+4. مراعاة القيود العملية (التكلفة، الأمان، سياسات المؤسسة)
+5. قابلية التطبيق (هل المصفوفة قابلة للاستخدام الفعلي في المشروع؟)`
+  }
+];
+
+const CURRICULUM = [
+  {
+    id:0,num:"الباب الأول",
+    title:"هندسة البرومبت والتعاون مع الآلة",
+    desc:"تحويلك من كاتب أوامر إلى مصمم حوار استراتيجي",
+    goal:"الهدف: تحويل المتدرب من كاتب أوامر إلى مصمم حوار استراتيجي يقود النموذج بوعي ودقة.",
+    lessons:[
+      {id:"1-1",title:"ما هو البرومبت فعلياً؟ (تفكيك الوهم)",objective:"نقل المتدرب من «البرومبت = سؤال» إلى «البرومبت = تصميم بيئة تفكير للنموذج».",
+      content:`<div class="hbox gold"><p><strong>مرحباً بك في الكورس.</strong> ستخرج من هذه الأبواب الثلاثة بمهارة واحدة محددة: التحكم في جودة مخرجات الذكاء الاصطناعي بدلاً من قبولها كما تأتي. كل درس فيه تمرين حقيقي — لا محاضرة.</p></div><p>أغلب الناس يتعامل مع الذكاء الاصطناعي كآلة بحث متطورة — يكتب سؤالاً ويتوقع إجابة. هذا هو الخطأ الجوهري الأول.</p><h3>النموذج لا يفهم نيتك</h3><p>النموذج يتفاعل مع ما تكتبه حرفياً. لا يقرأ بين السطور. ما يتفاعل معه فعلاً: السياق الذي تقدمه، القيود التي تضعها، الدور الذي تحدده، شكل الإخراج المطلوب.</p><h3>الفرق الجوهري</h3><div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">❌ سؤال عادي</div>«كيف أزيد مبيعاتي؟»<br><br>النتيجة: عموميات، لغة إنشائية، لا قيمة تنفيذية.</div><div class="cmp-item good"><div class="cmp-lbl">✓ برومبت هندسي</div>دور + هدف + سياق + قيود + إخراج محدد = نتيجة قابلة للاستخدام</div></div><div class="hbox gold"><p><strong style="color:var(--gold)">البرومبت هو:</strong> مجموعة تعليمات مصممة لضبط طريقة تفكير النموذج — لا مجرد طلب نتيجة.</p><p>أنت لا تطلب إجابة — أنت تصمم بيئة تفكير كاملة.</p></div><h3>القاعدة الأساسية</h3><p>المخرجات الضعيفة في 90% من الحالات سببها إدخال ضعيف. Garbage In = Garbage Out. قبل أن تلوم النموذج، راجع برومبتك أولاً.</p>`},
+      {id:"1-2",title:"الأبعاد الثمانية لهندسة البرومبت",objective:"نقل المتدرب من «أحاول تحسين صياغتي» إلى «أمتلك إطاراً هندسياً ثابتاً».",
+      content:`<p>جودة المخرجات = جودة الهيكل. ليس طول البرومبت ولا تعقيده — بل <strong>اكتمال عناصره</strong>.</p><div class="dim-grid"><div class="dim-item"><div class="dim-num">01</div><div class="dim-name">الدور (Role)</div><div class="dim-desc">من هو النموذج الآن؟ كل دور يغير طريقة التفكير.</div></div><div class="dim-item"><div class="dim-num">02</div><div class="dim-name">الهدف (Objective)</div><div class="dim-desc">ليس «حلل» بل «استخرج الأسباب الجذرية للفجوة التالية».</div></div><div class="dim-item"><div class="dim-num">03</div><div class="dim-name">السياق (Context)</div><div class="dim-desc">البيانات، القيود، وصف السوق. بدون سياق: تعميم.</div></div><div class="dim-item"><div class="dim-num">04</div><div class="dim-name">القيود (Constraints)</div><div class="dim-desc">ما الذي لا يجب فعله؟ القيود تمنع الانحراف.</div></div><div class="dim-item"><div class="dim-num">05</div><div class="dim-name">الجمهور (Audience)</div><div class="dim-desc">مجلس إدارة؟ فريق؟ عميل؟ صياغة المخرجات تتغير جذرياً.</div></div><div class="dim-item"><div class="dim-num">06</div><div class="dim-name">صيغة الإخراج</div><div class="dim-desc">جدول؟ نقاط؟ مصفوفة؟ بدون تحديد: نتيجة غير قابلة للاستخدام.</div></div><div class="dim-item"><div class="dim-num">07</div><div class="dim-name">مستوى العمق</div><div class="dim-desc">نظرة عامة؟ تحليل متقدم؟ تطبيق عملي؟ يضبط مستوى الإجابة.</div></div><div class="dim-item"><div class="dim-num">08</div><div class="dim-name">معايير التقييم</div><div class="dim-desc">كيف تعرف أن النتيجة جيدة؟ بُعد احترافي نادر الاستخدام.</div></div></div>`},
+      {id:"1-3",title:"التعاون مع الآلة: من أوامر إلى حوار",objective:"نقل المتدرب من «أكتب برومبت وأستلم إجابة» إلى «أبني حواراً مرحلياً يحسّن جودة التفكير».",
+      content:`<p>النتيجة الأولى ليست الهدف — هي نقطة بداية.</p><div class="hbox"><p><strong style="color:var(--gold)">المرحلة 1 — الاستكشاف:</strong> افتح الاحتمالات. لا تطلب حلولاً — اطلب توسيع التفكير.</p><p><strong style="color:var(--gold)">المرحلة 2 — التضييق:</strong> «ركّز فقط على الأسباب التشغيلية.» هنا يبدأ الحوار الحقيقي.</p><p><strong style="color:var(--gold)">المرحلة 3 — التحقق:</strong> «ما الافتراضات التي بنيت عليها؟» استخدم النموذج كمدقق لنفسه.</p></div><div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">❌ أمر</div>«اقترح خطة»<br>نتيجة واحدة سطحية.</div><div class="cmp-item good"><div class="cmp-lbl">✓ حوار مرحلي</div>استكشف ← ضيّق ← تحقق ← لخّص</div></div><p>القاعدة: <strong>الجودة تأتي من إدارة الحوار</strong> لا من جودة الرد الأول.</p>`},
+      {id:"1-4",title:"إدارة السياق والانحراف في الحوارات الطويلة",objective:"نقل المتدرب من «الحوار تشتت» إلى «أستطيع ضبط السياق وإعادة توجيه النموذج».",
+      content:`<p>النموذج يعتمد على السياق النصي الحالي. كلما طال الحوار — تتراكم المعلومات وتحدث الانحرافات.</p><div class="hbox gold"><p><strong style="color:var(--gold)">أداة التلخيص المرحلي:</strong> «لخص ما تم الاتفاق عليه في 5 نقاط فقط» — ثم ابدأ من الملخص.</p><p><strong style="color:var(--gold)">إعادة تثبيت الهدف:</strong> «هدفنا الحالي هو ___ . تجاهل أي مسارات أخرى.»</p><p><strong style="color:var(--gold)">الفصل بين المراحل:</strong> تحليل ← تضييق ← اختبار ← تلخيص. كل مرحلة مستقلة.</p></div>`},
+      {id:"1-5",title:"بناء مكتبة برومبتات منهجية",objective:"نقل المتدرب من «أكتب برومبت حسب الحاجة» إلى «أمتلك مكتبة منهجية قابلة لإعادة الاستخدام».",
+      content:`<p>المحترف لا يبدأ من الصفر كل مرة. مكتبة منظمة = كفاءة + اتساق + سرعة.</p><div class="hbox gold"><p>ابنِ برومبتك الأول من مهمة حقيقية — وابدأ مكتبتك من هذا الدرس.</p></div>`}
+    ]
+  },
+  {
+    id:1,num:"الباب الثاني",
+    title:"العيوب والتحديات وأخلاقيات الذكاء الاصطناعي",
+    desc:"بناء مستخدم واعٍ بحدود التقنية، قادر على تقليل المخاطر",
+    goal:"الهدف: بناء مستخدم واعٍ بحدود التقنية، قادر على تقليل المخاطر، يملك بروتوكول استخدام مسؤول.",
+    lessons:[
+      {id:"2-1",title:"ما حدود هذه التقنية فعلياً؟",objective:"نقل المتدرب من «النموذج ذكي جداً» إلى «قوي في أنماط معينة وضعيف في أخرى».",
+      content:`<p>الذكاء الاصطناعي نظام تنبؤ لغوي متقدم — لا يفهم النية، لا يملك إدراكاً حقيقياً، لا يتحقق من الحقيقة ذاتياً.</p><div class="cmp-grid"><div class="cmp-item good"><div class="cmp-lbl">✓ قوي في</div>توليد بدائل بسرعة<br>تلخيص وتنظيم المعلومات<br>إعادة الصياغة والهيكلة<br>استخراج الأنماط من النصوص</div><div class="cmp-item bad"><div class="cmp-lbl">❌ معرّض للخطأ في</div>الحقائق الدقيقة بدون سياق<br>التحليل بدون بيانات كافية<br>السياقات القانونية والتنظيمية<br>التنبؤ الحقيقي بالمستقبل</div></div><div class="hbox gold"><p><strong style="color:var(--gold)">أخطر وهم:</strong> الثقة في الصياغة. الإجابة قد تبدو مرتبة ومنطقية ومقنعة — لكنها مبنية على افتراض خاطئ.</p><p><strong>الصياغة القوية ≠ صحة النتيجة.</strong></p></div>`},
+      {id:"2-2",title:"أنماط الانحراف والأخطاء الشائعة",objective:"نقل المتدرب من «النتيجة تبدو جيدة» إلى «أستطيع تشخيص نوع الخطأ بدقة».",
+      content:`<div class="hbox"><p><strong style="color:var(--gold)">النمط 1 — الانحياز:</strong> يميل لموافقة الإطار المقدَّم له. حلول نمطية، إجماع بدون دليل.</p></div><div class="hbox"><p><strong style="color:var(--gold)">النمط 2 — الثقة المفرطة:</strong> يعرض استنتاجات قاطعة بدون ذكر درجة عدم اليقين أو شروط النجاح.</p></div><div class="hbox"><p><strong style="color:var(--gold)">النمط 3 — التسطيح:</strong> يقدم إجابة وسطية آمنة ويتجنب المواقف الحادة أو الاستنتاجات الجريئة حتى حين تكون صحيحة.</p></div><div class="cmp-grid"><div class="cmp-item good"><div class="cmp-lbl">خطأ عارض</div>رقم غير دقيق — سهل الاكتشاف والتصحيح.</div><div class="cmp-item bad"><div class="cmp-lbl">❌ خطأ بنيوي</div>تحليل كامل على افتراض خاطئ — لا يبدو واضحاً وقد يقود لقرار كارثي.</div></div>`},
+      {id:"2-3",title:"إدارة المخاطر في القرارات الاستراتيجية",objective:"نقل المتدرب من «أعرف أن هناك أخطاء» إلى «أمتلك آلية لتقليل أثرها قبل القرار».",
+      content:`<div class="dim-grid"><div class="dim-item"><div class="dim-name">مخاطر معرفية</div><div class="dim-desc">تحليل على بيانات ناقصة أو افتراضات غير مذكورة.</div></div><div class="dim-item"><div class="dim-name">مخاطر تشغيلية</div><div class="dim-desc">تنفيذ قرار اعتماداً على تحليل غير دقيق.</div></div><div class="dim-item"><div class="dim-name">مخاطر مالية</div><div class="dim-desc">استثمار بناءً على تقدير سوق غير موثق.</div></div><div class="dim-item"><div class="dim-name">مخاطر السمعة</div><div class="dim-desc">نشر معلومة غير دقيقة علناً أو أمام عميل.</div></div></div><div class="hbox gold"><p><strong style="color:var(--gold)">السؤال الأقوى:</strong> «ما الافتراضات التي بنيت عليها؟» — هذا السؤال الواحد يكشف هشاشة أي تحليل.</p><p><strong style="color:var(--gold)">القاعدة:</strong> النموذج يحلل — القيادة تقرر. لا تخلط الدورين أبداً.</p></div>`},
+      {id:"2-4",title:"أخلاقيات الاستخدام في البيئة القيادية",objective:"نقل المتدرب من «هل هذا صحيح؟» إلى «هل هذا مسؤول أخلاقياً؟»",
+      content:`<div class="hbox"><p><strong style="color:var(--gold)">الشفافية:</strong> الإفصاح عن استخدام AI يبني الثقة. إخفاء المصدر قد يخلق تضليلاً غير مقصود.</p></div><div class="hbox"><p><strong style="color:var(--gold)">النزاهة:</strong> هل تحققت من صحة المعلومات الحساسة؟ «النموذج قال» ليست إجابة مقبولة.</p></div><div class="hbox"><p><strong style="color:var(--gold)">العدالة:</strong> هل التحليل قد يتأثر بانحياز بيانات؟ خاصة في قرارات تمس الأفراد.</p></div><div class="hbox"><p><strong style="color:var(--gold)">المساءلة:</strong> المسؤولية لا تنتقل للنموذج — تبقى عندك دائماً.</p></div><div class="hbox gold"><p>التمرين يبدأ بتشخيص واقعك الفعلي — ثم تبني بروتوكولك الأخلاقي الشخصي بمساعدة النموذج.</p></div>`},
+      {id:"2-5",title:"بناء بروتوكول الاستخدام الداخلي",objective:"نقل المتدرب من «أنا واعٍ بالمخاطر» إلى «لدي بروتوكول قابل للتطبيق».",
+      content:`<div class="hbox gold"><p>البروتوكول يُبنى عبر النموذج نفسه — أدخل مجالك وسياقك والنموذج يبني الهيكل الأربعي معك: نطاق الاستخدام، مستويات الحساسية، مسؤولية القرار، توثيق الاستخدام.</p></div><div class="hbox"><p><strong style="color:var(--gold)">الهدف:</strong> بروتوكول قصير قابل للقراءة في 30 ثانية قبل أي مهمة — لا وثيقة تُحفظ في درج.</p></div>`}
+    ]
+  },
+  {
+    id:2,num:"الباب الثالث",
+    title:"اختيار النموذج وسيناريوهات حل المشكلات",
+    desc:"تحويلك من مستخدم عشوائي للأدوات إلى صانع قرار تقني واعٍ",
+    goal:"الهدف: تحويل المتدرب من مستخدم عشوائي إلى صانع قرار تقني واعٍ يختار النموذج بمنهجية.",
+    lessons:[
+      {id:"3-1",title:"كيف تختار النموذج المناسب؟",objective:"نقل المتدرب من «أي نموذج قوي يكفي» إلى «لكل مهمة خصائص تتطلب نموذجاً محدداً».",
+      content:`<p>لا تبدأ بـ «أي نموذج أفضل؟» — ابدأ بـ «ما طبيعة المهمة؟»</p><div class="hbox gold"><p>الاختيار ليس تقنياً فقط — راعِ دائماً: سياسات مؤسستك، متطلبات الأمان، التكامل مع أنظمتك الحالية.</p></div>`},
+      {id:"3-2",title:"مقارنة نتائج نماذج مختلفة",objective:"نقل المتدرب من «أعتقد أن هذا الأفضل» إلى «اخترت بناءً على نتائج قابلة للمقارنة».",
+      content:`<p>الطريقة الأسرع لمعرفة أي نموذج يناسبك: اجعل النموذج نفسه يقارن.</p><div class="hbox gold"><p>برومبت واحد يُنتج جدول 8 غايات × 5 نماذج — هو مرجعك الشخصي لأي اختيار مستقبلي. أعد تشغيله كل 3 أشهر لمواكبة التحديثات.</p></div><div class="hbox"><p><strong style="color:var(--gold)">ملاحظة:</strong> النموذج الذي تسأله سيقيّم نفسه ضمن الجدول — إرساله لنموذجين يكشف الانحياز ويعطيك صورة أدق.</p></div>`},
+      {id:"3-3",title:"بناء سيناريو عملي لحل مشكلة",objective:"نقل المتدرب من «اخترت نموذجاً» إلى «لدي خطة تشغيل واضحة خطوة بخطوة».",
+      content:`<p>السيناريو الفعّال لا يُخطَّط على ورق — يُنفَّذ داخل محادثة واحدة منظمة.</p><div class="hbox gold"><p>الجولات الأربع: استكشاف ← تضييق ← تحقق ← تلخيص. كل جولة تبني على السابقة وتضيّق النتيجة.</p></div><div class="hbox"><p><strong style="color:var(--gold)">قبل البدء — حدد ثلاثة أشياء:</strong></p><p>المهمة الدقيقة، النموذج المختار وسببه، من يراجع النتيجة.</p></div>`},
+      {id:"3-4",title:"حدود المقارنة ومتى يصبح الهجين أكثر كفاءة",objective:"نقل المتدرب من «سأختار نموذجاً واحداً لكل شيء» إلى «بعض المهام تتطلب توزيعاً ذكياً».",
+      content:`<div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">الاختيار العشوائي</div>نموذج واحد لكل شيء بلا مبرر.<br>يضيع وقتاً ويفوّت جودة.</div><div class="cmp-item good"><div class="cmp-lbl">✓ التوزيع المبني على بيانات</div>جدول 3-3 يحدد النموذج الأنسب لكل غاية — القرار مبرر لا مخمّن.</div></div><div class="hbox gold"><p>ارجع لجدول المقارنة الذي بنيته — هو أساس توزيعك في هذا الدرس.</p><p><strong>الهجين مبرر فقط عندما:</strong> الفروق في الجودة واضحة ومؤثرة، أو تختلف متطلبات الأمان بين المراحل.</p></div>`}
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let state={userName:'',completed:{},influence:0,fileEntries:[],profile:{field:'',audience:'',output:''}};
+let currentChapter=0, currentLesson=null, currentChallengeChapter=0;
+
+function loadState(){const s=localStorage.getItem('ghorfa_v3');if(s)try{state=JSON.parse(s);}catch(e){}}
+function saveState(){localStorage.setItem('ghorfa_v3',JSON.stringify(state));}
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function enterDashboard(){
+  const name=document.getElementById('user-name-input').value.trim();
+  if(!name){document.getElementById('user-name-input').focus();return;}
+  state.userName=name; saveState();
+  document.getElementById('display-name').textContent=name;
+  document.getElementById('file-name').textContent='ملف القائد — '+name;
+  renderChapters(); showScreen('dashboard');
+  setTimeout(()=>updateInfluenceBar(),300);
+}
+
+function showDashboard(){renderChapters();showScreen('dashboard');setTimeout(()=>updateInfluenceBar(),300);}
+
+function showChapter(chIdx){
+  currentChapter=chIdx;
+  const ch=CURRICULUM[chIdx];
+  document.getElementById('ch-topbar-title').textContent=ch.title;
+  document.getElementById('cv-num').textContent=ch.num;
+  document.getElementById('cv-title').textContent=ch.title;
+  document.getElementById('cv-goal').textContent=ch.goal;
+  const list=document.getElementById('lessons-list');
+  list.innerHTML='';
+  ch.lessons.forEach((lesson,i)=>{
+    const done=!!state.completed[lesson.id];
+    const el=document.createElement('div');
+    el.className='lesson-item'+(done?' completed':'');
+    el.onclick=()=>showLesson(chIdx,i);
+    el.innerHTML=`<div class="lesson-status">${done?`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52B788" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`:''}</div><div class="lesson-info"><div class="lesson-num">الدرس ${i+1}</div><div class="lesson-title">${lesson.title}</div></div><div class="lesson-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 3 12 9 6"/></svg></div>`;
+    list.appendChild(el);
+  });
+  const allDone=ch.lessons.every(l=>!!state.completed[l.id]);
+  const card=document.getElementById('challenge-card');
+  const chal=CHALLENGES[chIdx];
+  if(allDone&&chal){
+    currentChallengeChapter=chIdx;
+    card.classList.add('visible');
+    document.getElementById('ch-title').textContent=chal.title;
+    document.getElementById('ch-desc').textContent=chal.desc;
+    document.getElementById('ch-answer').value='';
+    document.getElementById('eval-flow').classList.remove('visible');
+    document.getElementById('eval-result-display').classList.remove('visible');
+    document.getElementById('eval-result-input').value='';
+  } else {
+    card.classList.remove('visible');
+  }
+  showScreen('chapter-view');
+}
+
+function showLesson(chIdx,lessonIdx){
+  currentChapter=chIdx; currentLesson=lessonIdx;
+  const ch=CURRICULUM[chIdx], lesson=ch.lessons[lessonIdx];
+  const done=!!state.completed[lesson.id];
+  document.getElementById('lesson-topbar-title').textContent=ch.num;
+  document.getElementById('lv-ch-label').textContent=ch.num+' — الدرس '+(lessonIdx+1);
+  document.getElementById('lv-title').textContent=lesson.title;
+  document.getElementById('lv-obj').innerHTML=`<strong>الهدف:</strong> ${lesson.objective}`;
+  document.getElementById('lv-content').innerHTML=lesson.content;
+  renderExercise(lesson.id);
+  const btn=document.getElementById('btn-complete');
+  document.getElementById('complete-btn-text').textContent=done?'تم إتمام هذا الدرس ✓':'إتمام الدرس';
+  done?btn.classList.add('done'):btn.classList.remove('done');
+  showScreen('lesson-view');
+}
+
+// ══════════════════════════════════════════════════════
+// EXERCISE RENDER
+// ══════════════════════════════════════════════════════
+function renderExercise(lessonId){
+  const ex=EX[lessonId];
+  const container=document.getElementById('lv-exercise');
+  if(!ex){container.innerHTML='';return;}
+  if(lessonId==='1-5'){renderExercise15(container,ex);return;}
+  const badgeClass=ex.type==='ب'?'b':ex.type==='ج'?'c':'';
+  const uid=lessonId.replace('-','_');
+
+  // ── helpers ──
+  const COPY_ICON=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+
+  function promptBlock(id, text, btnId){
+    return `<div class="prompt-block">
+      <button class="copy-btn" id="${btnId}" onclick="copyRawExPrompt('${id}','${btnId}')">
+        ${COPY_ICON} نسخ
+      </button>
+      <div class="prompt-text" id="${id}">${escHtml(text)}</div>
+    </div>`;
+  }
+
+  function activityBlock(text){
+    return `<div class="activity-block">
+      <div class="activity-text">${escHtml(text)}</div>
+    </div>`;
+  }
+
+  function roundsBlock(rounds, instrText){
+    return `<div class="rounds-instr">${escHtml(instrText)}</div>` +
+      rounds.map((r,i)=>`
+      <div class="round-item">
+        <div class="round-label">${escHtml(r.label)}</div>
+        ${promptBlock(`round_${uid}_${i}`, r.prompt, `cpbtn_round_${uid}_${i}`)}
+      </div>`).join('');
+  }
+
+  // ── build p1 block ──
+  let p1Html='';
+  let p1Label='البرومبت الأول — انسخه وجرّبه في أي نموذج';
+  if(ex.p1_rounds){
+    // multi-round lesson: show round cards + first prompt for copy
+    p1Html = roundsBlock(ex.p1_rounds, ex.p1_instr||'أرسل الجولات بالترتيب في نفس المحادثة');
+  } else if(ex.p1_activity){
+    p1Label = 'النشاط الأول — اقرأ وأجب';
+    p1Html = activityBlock(ex.p1);
+  } else {
+    if(ex.p1_instr) p1Html = `<p class="rounds-instr">${ex.p1_instr}</p>`;
+    p1Html += promptBlock(`p1_${uid}`, ex.p1, `cpbtn1_${uid}`);
+  }
+
+  // ── build p2 block ──
+  let p2Html='';
+  let p2Label='البرومبت الثاني — انسخه وجرّبه';
+  let p2Step = '3';
+  if(ex.p2_matrix){
+    // 2-3 special: checklist + verify prompt
+    p2Label = 'طبّق مصفوفة المخاطر — ثم أرسل برومبت التحقق';
+    p2Html = `<div class="activity-block" style="margin-bottom:.8rem">
+      <div class="activity-text" style="font-weight:700;margin-bottom:.6rem">مصفوفة المخاطر — ضع إشارة لكل مخاطر تنطبق:</div>
+      ${ex.p2_matrix.map(m=>`<label style="display:flex;align-items:flex-start;gap:.6rem;padding:.4rem 0;cursor:pointer">
+        <input type="checkbox" style="margin-top:.15rem;accent-color:var(--gold)">
+        <span style="font-size:.85rem;line-height:1.5">${escHtml(m)}</span>
+      </label>`).join('')}
+    </div>` + promptBlock(`p2_${uid}`, ex.p2, `cpbtn2_${uid}`);
+  } else if(ex.p2_activity){
+    p2Label = 'النشاط الثاني — اقرأ وأجب';
+    p2Html = activityBlock(ex.p2);
+  } else {
+    p2Html = promptBlock(`p2_${uid}`, ex.p2, `cpbtn2_${uid}`);
+  }
+
+  // ── build round instruction note if p1 has rounds ──
+  const p1StepLabel = ex.p1_rounds
+    ? 'الجولات — انسخ كل جولة بالترتيب وأرسلها في نفس المحادثة'
+    : ex.p1_activity ? 'النشاط الأول' : 'البرومبت الأول — انسخه وجرّبه في أي نموذج';
+
+  const p1ResLabel = ex.p1_rounds ? 'الصق نتيجة الجولة الأخيرة هنا' : 'الصق النتيجة هنا';
+  const p2ResLabel = 'الصق النتيجة هنا';
+
+  // figure step numbers
+  const s1='1', s2='2', s3=ex.p1_rounds?'3':'3', s4='4', s5='5';
+
+  container.innerHTML=`
+  <div class="exercise-wrap">
+    <div class="ex-header">
+      <div class="ex-badge ${badgeClass}">تمرين — النمط ${ex.type}</div>
+      <div class="ex-meta">
+        <div class="ex-title">${ex.title}</div>
+        <div class="ex-desc">${ex.typeLabel} — ${ex.desc}</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-step">
+        <div class="step-lbl"><div class="step-n">${s1}</div>${escHtml(p1StepLabel)}</div>
+        ${p1Html}
+      </div>
+      <div class="ex-step">
+        <div class="step-lbl"><div class="step-n">${s2}</div>${p1ResLabel}</div>
+        <textarea class="res-area" placeholder="الصق النتيجة هنا..."></textarea>
+      </div>
+      <div class="ex-divider"><span>${ex.p2_activity||ex.p2_matrix ? 'ثم طبّق' : 'ثم جرّب البرومبت التالي'}</span></div>
+      ${ex.p_bridge ? `
+      <div class="ex-step">
+        <div class="step-lbl"><div class="step-n">3</div>${ex.p_bridge_label || 'الصق النتيجة هنا — ستُدمج تلقائياً في البرومبت التالي'}</div>
+        <textarea class="res-area" id="bridge_${uid}" placeholder="الصق المحتوى هنا — سيُدمج تلقائياً في البرومبت التالي عند النسخ..." style="min-height:140px"></textarea>
+      </div>
+      <div class="ex-divider"><span>ثم أرسل للمراجعة</span></div>` : ''}
+      <div class="ex-step">
+        <div class="step-lbl"><div class="step-n">${ex.p_bridge ? '4' : s3}</div>${escHtml(ex.p2_activity ? 'النشاط الثاني' : ex.p2_matrix ? 'مصفوفة المخاطر + برومبت التحقق' : 'البرومبت الثاني — انسخه وجرّبه')}</div>
+        ${ex.p_bridge ? p2Html.replace('copyRawExPrompt(', `copyBridgePrompt('bridge_${uid}',`) : p2Html}
+      </div>
+      <div class="ex-step">
+        <div class="step-lbl"><div class="step-n">${s4}</div>${p2ResLabel}</div>
+        <textarea class="res-area" placeholder="الصق النتيجة أو ملاحظتك هنا..."></textarea>
+      </div>
+      <div class="ex-step">
+        <div class="step-lbl"><div class="step-n">${s5}</div>${escHtml(ex.reflect)}</div>
+        <textarea class="reflect-area" placeholder="اكتب ملاحظتك بكلماتك الخاصة..."></textarea>
+        <button class="btn-reveal" onclick="revealEx('rev_${uid}')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          اكشف ما يجب أن تكون لاحظته
+        </button>
+      </div>
+      <div class="reveal-box" id="rev_${uid}">
+        <div class="reveal-title">الكشف — ما يجب أن تكون لاحظته</div>
+        <div class="reveal-content">${escHtml(ex.reveal)}</div>
+      </div>
+    </div>
+  </div>`;
+
+  // store prompts for copy
+  window._exPrompts = window._exPrompts || {};
+  if(ex.p1_rounds) ex.p1_rounds.forEach((r,i)=>{ window._exPrompts[`round_${uid}_${i}`]=r.prompt; });
+  window._exPrompts[`p1_${uid}`] = ex.p1;
+  window._exPrompts[`p2_${uid}`] = ex.p2;
+}
+
+function copyRawExPrompt(id, btnId){
+  const text = (window._exPrompts && window._exPrompts[id]) || document.getElementById(id)?.innerText || '';
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById(btnId);
+    const COPY_ICON='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    const CHECK_ICON='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    if(btn){btn.classList.add('copied');btn.innerHTML=CHECK_ICON+' تم';setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML=COPY_ICON+' نسخ';},2000);}
+    showToast('تم النسخ — الصقه في نموذجك الآن');
+  }).catch(()=>showToast('انسخ النص يدوياً'));
+}
+
+function escHtml(str){
+  return str
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/\n/g,'<br>');
+}
+
+// ✅ FIXED: copy raw text from the stored EX data, not from DOM innerHTML
+function copyPromptText(domId, btnId){
+  const el=document.getElementById(domId);
+  if(!el) return;
+  // find the raw text from EX data
+  const lessonId=domId.includes('p1_') ? domId.replace('p1_','').replace('_','-') : domId.replace('p2_','').replace('_','-');
+  const isP1=domId.startsWith('p1_');
+  const ex=EX[lessonId];
+  if(!ex) return;
+  const text=isP1?ex.p1:ex.p2;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById(btnId);
+    if(btn){btn.classList.add('copied');btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> تم';setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ';},2000);}
+    showToast('تم النسخ — الصقه في نموذجك الآن');
+  }).catch(()=>showToast('انسخ النص يدوياً'));
+}
+
+function copyBridgePrompt(bridgeId, promptId, btnId){
+  const bridgeEl = document.getElementById(bridgeId);
+  const bridgeText = bridgeEl ? bridgeEl.value.trim() : '';
+  const basePrompt = (window._exPrompts && window._exPrompts[promptId]) || '';
+  // Replace the bridge placeholder — handles any [الصق هنا ...] pattern at start
+  const merged = basePrompt.replace(/^\[الصق هنا[^\]]*\]\n?/u, bridgeText ? bridgeText + '\n\n' : '');
+  navigator.clipboard.writeText(merged).then(()=>{
+    const btn=document.getElementById(btnId);
+    const COPY_ICON='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    const CHECK_ICON='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    if(btn){btn.classList.add('copied');btn.innerHTML=CHECK_ICON+' تم';setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML=COPY_ICON+' نسخ';},2000);}
+    showToast(bridgeText ? 'تم الدمج والنسخ — الصقه في نموذجك' : 'تم النسخ — لا تنسَ لصق البروتوكول في المكان المحدد');
+  }).catch(()=>showToast('انسخ النص يدوياً'));
+}
+
+function revealEx(id){document.getElementById(id).classList.add('visible');}
+
+// ══════════════════════════════════════════════════════
+// LESSON 1-5 — PERSONALISED 3-PHASE PROMPT BUILDER
+// ══════════════════════════════════════════════════════
+
+// Library saved in state
+function getLibrary(){ return state.promptLibrary || []; }
+function saveLibrary(lib){ state.promptLibrary = lib; saveState(); }
+
+function renderExercise15(container, ex){
+  container.innerHTML = `
+  <div class="exercise-wrap">
+    <div class="ex-header">
+      <div class="ex-badge c">تمرين — النمط ج</div>
+      <div class="ex-meta">
+        <div class="ex-title">${ex.title}</div>
+        <div class="ex-desc">${ex.typeLabel} — ${ex.desc}</div>
+      </div>
+    </div>
+    <div class="ex-body">
+
+      <!-- ── PHASE 1: Task input + weak prompt ── -->
+      <div class="phase-block" id="ph1-block">
+        <div class="phase-header">
+          <div class="phase-num">1</div>
+          <div>
+            <div class="phase-title">أدخل مهمتك — وجرّب البرومبت الضعيف</div>
+            <div class="phase-subtitle">المنصة تولّد البرومبت الضعيف من مهمتك مباشرة — جرّبه أولاً</div>
+          </div>
+        </div>
+        <div class="phase-body">
+
+          <!-- 8-type explainer -->
+          <div style="margin-bottom:1.5rem">
+            <div style="font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:.7rem;text-transform:uppercase;letter-spacing:.08em">أنواع البرومبتات الثمانية — المنصة ستكتشف النوع تلقائياً</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">📊 تحليل</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">تفكيك مشكلة، استخراج أسباب، كشف فجوات</div>
+              </div>
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">🔍 تحدي</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">اختبار فرضية، كشف نقاط ضعف، أسلوب المحامي الشيطان</div>
+              </div>
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">📋 تلخيص</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">اختصار محتوى طويل مع الحفاظ على جوهره</div>
+              </div>
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">✅ تقييم</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">مراجعة خيار أو قرار بمعايير واضحة قبل الاعتماد</div>
+              </div>
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">🖊️ إنتاج</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">كتابة محتوى جديد — تقرير، بوست، بريد، عرض</div>
+              </div>
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">🎯 تخطيط</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">بناء خطة، جدول زمني، خارطة طريق، توزيع مهام</div>
+              </div>
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">🔄 تحويل</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">تحويل محتوى موجود لصيغة أخرى — تقرير إلى عرض، اجتماع إلى بريد</div>
+              </div>
+              <div style="padding:.7rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+                <div style="font-size:.85rem;font-weight:700;margin-bottom:.2rem">💬 محاكاة</div>
+                <div style="font-size:.75rem;color:var(--text-dim);line-height:1.5">تمثيل موقف — محاكاة عميل، تجهيز لمفاوضة أو مقابلة</div>
+              </div>
+            </div>
+            <div style="margin-top:.7rem;padding:.6rem .9rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:7px;font-size:.78rem;color:var(--text-dim)">
+              💡 أدخل مهمتك فقط — المنصة تولّد البرومبت الضعيف والقوي تلقائياً وتكتشف النوع بعد المرحلة الثانية
+            </div>
+          </div>
+
+          <div class="guided-q">
+            <div class="guided-q-label">مهمتك المتكررة</div>
+            <div class="guided-q-hint">اكتب مهمة حقيقية تكررها في عملك — جملة واحدة كافية</div>
+            <div style="display:flex;gap:.7rem;align-items:flex-start">
+              <input class="guided-input" id="ph1-task" placeholder="مثال: تلخيص تقارير الأداء الأسبوعية للفريق" style="flex:1"/>
+              <button class="btn-build" style="white-space:nowrap;margin-top:0;padding:.72rem 1.2rem" onclick="generateWeakPrompt()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                ولّد البرومبت
+              </button>
+            </div>
+          </div>
+
+          <div id="weak-prompt-wrap" style="display:none;animation:fadeUp .3s ease">
+            <div class="ex-step">
+              <div class="step-lbl"><div class="step-n">1</div>البرومبت الضعيف — انسخه وأرسله لأي نموذج</div>
+              <div class="prompt-block">
+                <button class="copy-btn" id="cpbtn-weak" onclick="copyRaw15('weak')">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  نسخ
+                </button>
+                <div class="prompt-text" id="weak-prompt-text"></div>
+              </div>
+            </div>
+            <div class="ex-step">
+              <div class="step-lbl"><div class="step-n">2</div>الصق نتيجة البرومبت الضعيف هنا</div>
+              <textarea class="res-area" id="res-weak" placeholder="الصق النتيجة هنا..."></textarea>
+            </div>
+            <button class="btn-build" style="margin-top:.4rem" onclick="openPhase2()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 3 12 9 6"/></svg>
+              انتقل للمرحلة الثانية — رفع المهمة
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE 2: Lift prompt → paste engineered result ── -->
+      <div class="phase-block" id="ph2-block" style="display:none">
+        <div class="phase-header">
+          <div class="phase-num" style="background:var(--cc-blue-dim);border-color:var(--cc-blue);color:var(--cc-blue)">2</div>
+          <div>
+            <div class="phase-title">برومبت الرفع — دع النموذج يبني لك البرومبت الهندسي</div>
+            <div class="phase-subtitle">انسخ برومبت الرفع، أرسله للنموذج، والصق البرومبت الهندسي الناتج هنا</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="ex-step">
+            <div class="step-lbl"><div class="step-n">1</div>برومبت الرفع — انسخه وأرسله للنموذج</div>
+            <div class="prompt-block">
+              <button class="copy-btn" id="cpbtn-lift" onclick="copyRaw15('lift')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                نسخ
+              </button>
+              <div class="prompt-text" id="lift-prompt-text"></div>
+            </div>
+          </div>
+          <div class="ex-step">
+            <div class="step-lbl"><div class="step-n">2</div>الصق البرومبت الهندسي الناتج من النموذج هنا</div>
+            <textarea class="res-area" id="res-lift" placeholder="الصق البرومبت الهندسي الذي أنتجه النموذج..." style="min-height:140px"></textarea>
+          </div>
+          <button class="btn-build" onclick="analyseEngineered()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            تحقق من جودة البرومبت وافتح المرحلة الثالثة
+          </button>
+
+          <!-- Dimension check result -->
+          <div class="built-wrap" id="dim-check-wrap">
+            <div class="built-label">تقرير الأبعاد — ما وُجد وما يحتاج إضافة</div>
+            <div id="dim-check-result"></div>
+            <div id="dim-missing-action" style="display:none;margin-top:1rem">
+              <div class="guided-q-hint" style="margin-bottom:.5rem">الأبعاد الناقصة يمكن إضافتها الآن قبل الانتقال:</div>
+              <textarea class="guided-ta" id="dim-additions" placeholder="أضف هنا الأبعاد الناقصة بكلماتك..." style="min-height:70px"></textarea>
+            </div>
+            <button class="btn-build" style="margin-top:.8rem;background:var(--green);color:var(--green-light)" onclick="openPhase3()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              انتقل للمرحلة الثالثة — الاستخدام والحفظ
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PHASE 3: Final prompt use + save ── -->
+      <div class="phase-block" id="ph3-block" style="display:none">
+        <div class="phase-header">
+          <div class="phase-num" style="background:rgba(45,106,79,.2);border-color:var(--green-light);color:var(--green-light)">3</div>
+          <div>
+            <div class="phase-title">استخدم البرومبت النهائي — وقارن واحفظ</div>
+            <div class="phase-subtitle">جرّب البرومبت الهندسي النهائي وقارن النتيجة مع البرومبت الضعيف</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="ex-step">
+            <div class="step-lbl"><div class="step-n">1</div>البرومبت النهائي المنضبط — انسخه وأرسله</div>
+            <div class="prompt-block">
+              <button class="copy-btn" id="cpbtn-final" onclick="copyRaw15('final')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                نسخ
+              </button>
+              <div class="prompt-text" id="final-prompt-text"></div>
+            </div>
+          </div>
+          <div class="ex-step">
+            <div class="step-lbl"><div class="step-n">2</div>الصق نتيجة البرومبت النهائي هنا</div>
+            <textarea class="res-area" id="res-final" placeholder="الصق النتيجة هنا..."></textarea>
+          </div>
+
+          <!-- Comparison -->
+          <div class="ex-divider"><span>مقارنة الرحلة كاملة</span></div>
+          <div class="built-compare" style="margin-bottom:1.2rem">
+            <div>
+              <div class="bc-col-lbl">نتيجة البرومبت الضعيف</div>
+              <div class="bc-answers" id="cmp-weak-result" style="min-height:100px;font-size:.8rem">ستظهر هنا بعد إدخال النتيجتين</div>
+            </div>
+            <div>
+              <div class="bc-col-lbl">نتيجة البرومبت النهائي</div>
+              <div class="bc-answers" id="cmp-final-result" style="min-height:100px;font-size:.8rem;border-color:rgba(82,183,136,.3)">ستظهر هنا بعد إدخال النتيجتين</div>
+            </div>
+          </div>
+          <button class="btn-reveal" onclick="showComparison()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            قارن النتيجتين
+          </button>
+
+          <!-- Save to library -->
+          <div class="ex-divider" style="margin-top:1.5rem"><span>احفظ في مكتبتك</span></div>
+          <div class="guided-q" style="margin-bottom:.8rem">
+            <div class="guided-q-label">اسم البرومبت في المكتبة</div>
+            <div class="guided-q-hint">اختر اسماً يذكّرك بالمهمة — مثال: تلخيص أداء أسبوعي</div>
+            <div style="display:flex;gap:.7rem;align-items:center">
+              <input class="guided-input" id="lib-name" placeholder="اسم البرومبت..." style="flex:1"/>
+              <button class="btn-build" style="margin-top:0;padding:.72rem 1.2rem;white-space:nowrap;background:var(--green);color:var(--green-light)" onclick="saveToLibrary()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                حفظ في المكتبة
+              </button>
+            </div>
+          </div>
+
+          <!-- Library preview -->
+          <div id="lib-preview" style="display:none;animation:fadeUp .3s ease">
+            <div class="built-label">مكتبتك — البرومبتات المحفوظة</div>
+            <div id="lib-list"></div>
+            <div class="guided-q-hint" style="margin-top:.8rem">
+              💡 يمكنك العودة لهذا الدرس في أي وقت لإضافة برومبتات جديدة لمهام مختلفة
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+
+  window._15prompts = { weak:'', lift:'', final:'' };
+  renderLibPreview();
+}
+
+// ── Generate weak prompt from task ──
+function generateWeakPrompt(){
+  const task = document.getElementById('ph1-task').value.trim();
+  if(!task){ showToast('اكتب مهمتك أولاً'); return; }
+  window._15task = task;
+  const weak = `ساعدني في: ${task}`;
+  window._15prompts.weak = weak;
+  document.getElementById('weak-prompt-text').textContent = weak;
+  document.getElementById('weak-prompt-wrap').style.display = 'block';
+  // Pre-build lift prompt too
+  const lift = buildLiftPrompt(task);
+  window._15prompts.lift = lift;
+  showToast('تم توليد البرومبت الضعيف ✓');
+}
+
+function buildLiftPrompt(task){
+  return `أنت خبير في هندسة البرومبت وتصميم التعليمات للذكاء الاصطناعي.
+
+المهمة التي أريد تنفيذها:
+"${task}"
+
+المطلوب منك:
+بناءً على هذه المهمة، اختر الأبعاد الثمانية الأنسب لها وابنِ برومبتاً هندسياً متقناً يحتوي:
+[الدور] — من يكون النموذج لتنفيذ هذه المهمة بأفضل شكل
+[الهدف] — صياغة دقيقة للمطلوب
+[السياق] — افترض السياق الأكثر شيوعاً لهذه المهمة
+[القيود] — ما الذي يجب ألا يفعله النموذج
+[الجمهور] — من سيستخدم النتيجة وكيف
+[صيغة الإخراج] — الشكل الأمثل للنتيجة
+[مستوى العمق] — تطبيقي / تحليلي / استراتيجي
+[معيار النجاح] — متى تكون النتيجة ممتازة
+
+القيود على إجابتك:
+- أخرج البرومبت فقط — بدون شرح أو مقدمة
+- استخدم نفس تنسيق الأقواس المربعة
+- كن محدداً ومباشراً في كل بُعد
+- في السطر الأخير حدد نوع البرومبت من الأنواع الثمانية التالية فقط:
+  تحليل / تحدي / تلخيص / تقييم / إنتاج / تخطيط / تحويل / محاكاة
+  واكتبه بهذا الشكل الحرفي: [النوع]: كلمة_واحدة`;
+}
+
+// ── Open phase 2 ──
+function openPhase2(){
+  const res = document.getElementById('res-weak').value.trim();
+  if(!res){ showToast('الصق نتيجة البرومبت الضعيف أولاً'); return; }
+  document.getElementById('lift-prompt-text').textContent = window._15prompts.lift || '';
+  document.getElementById('ph2-block').style.display = 'block';
+  document.getElementById('ph2-block').scrollIntoView({behavior:'smooth', block:'start'});
+  showToast('المرحلة الثانية مفتوحة — برومبت الرفع جاهز ✓');
+}
+
+// ── Analyse engineered prompt for dimensions ──
+function analyseEngineered(){
+  const engineered = document.getElementById('res-lift').value.trim();
+  if(!engineered){ showToast('الصق البرومبت الهندسي الناتج أولاً'); return; }
+  window._15prompts.engineered = engineered;
+
+  const DIMS = [
+    { key:'الدور', alts:['role','دور','بصفتك','أنت'] },
+    { key:'الهدف', alts:['goal','هدف','objective','المطلوب','قم بـ','لخّص','حلّل','قيّم'] },
+    { key:'السياق', alts:['context','سياق','خلفية','بناءً على'] },
+    { key:'القيود', alts:['constraint','قيود','لا تـ','لا ت','ركّز فقط','تجنّب'] },
+    { key:'الجمهور', alts:['audience','جمهور','موجّه لـ','يقرأها'] },
+    { key:'صيغة الإخراج', alts:['output','إخراج','جدول','نقاط','مصفوفة','في شكل'] },
+    { key:'مستوى العمق', alts:['depth','عمق','تطبيقي','تحليلي','استراتيجي','مستوى'] },
+    { key:'معيار النجاح', alts:['success','نجاح','النتيجة جيدة','يُعدّ ناجحاً'] },
+  ];
+
+  const lower = engineered.toLowerCase();
+  const found = [], missing = [];
+
+  DIMS.forEach(d => {
+    const hit = d.alts.some(a => engineered.includes(a) || lower.includes(a.toLowerCase()));
+    hit ? found.push(d.key) : missing.push(d.key);
+  });
+
+  const score = found.length;
+  let scoreColor = score >= 6 ? 'var(--green-light)' : score >= 4 ? '#FFC107' : 'var(--red-text)';
+  let scoreMsg = score >= 6 ? 'برومبت قوي' : score >= 4 ? 'برومبت متوسط — يحتاج تحسيناً' : 'برومبت ضعيف — أضف الأبعاد الناقصة';
+
+  let html = `<div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap">
+    <div style="font-size:1.8rem;font-weight:800;color:${scoreColor};font-family:'Cairo',sans-serif">${score}/8</div>
+    <div style="font-size:.88rem;color:${scoreColor};font-weight:600">${scoreMsg}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.8rem">`;
+
+  DIMS.forEach(d => {
+    const ok = found.includes(d.key);
+    html += `<div style="display:flex;align-items:center;gap:.5rem;padding:.45rem .7rem;border-radius:7px;background:${ok?'rgba(45,106,79,.12)':'rgba(220,53,69,.07)'};border:1px solid ${ok?'rgba(82,183,136,.25)':'rgba(220,53,69,.2)'}">
+      <span style="font-size:.85rem">${ok?'✓':'✗'}</span>
+      <span style="font-size:.82rem;color:${ok?'var(--green-light)':'var(--red-text)'}">${d.key}</span>
+    </div>`;
+  });
+  html += '</div>';
+
+  document.getElementById('dim-check-result').innerHTML = html;
+  document.getElementById('dim-missing-action').style.display = missing.length > 0 ? 'block' : 'none';
+  document.getElementById('dim-check-wrap').classList.add('visible');
+
+  // Store for phase 3
+  window._15missing = missing;
+  window._15found = found;
+  window._15engineered = engineered;
+
+  // Auto-extract prompt type from last line
+  const lines = engineered.split('\n').map(l=>l.trim()).filter(Boolean);
+  const lastLine = lines[lines.length-1] || '';
+  const typeMatch = lastLine.match(/\[النوع\]\s*[:：]\s*(.+)/);
+  const VALID_TYPES = ['تحليل','تحدي','تلخيص','تقييم','إنتاج','تخطيط','تحويل','محاكاة'];
+  let detectedType = '';
+  if(typeMatch){
+    const raw = typeMatch[1].trim();
+    detectedType = VALID_TYPES.find(t => raw.includes(t)) || '';
+  }
+  window._15detectedType = detectedType;
+
+  // Show type badge
+  if(detectedType){
+    const TYPE_ICONS = {
+      'تحليل':'📊','تحدي':'🔍','تلخيص':'📋','تقييم':'✅',
+      'إنتاج':'🖊️','تخطيط':'🎯','تحويل':'🔄','محاكاة':'💬'
+    };
+    const icon = TYPE_ICONS[detectedType] || '🗂️';
+    const badge = document.createElement('div');
+    badge.style.cssText = 'display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,.3);border-radius:8px;margin-top:.8rem';
+    badge.innerHTML = `<span style="font-size:1.1rem">${icon}</span><div><div style="font-size:.78rem;color:var(--text-dim);margin-bottom:.1rem">النوع المكتشف تلقائياً</div><div style="font-size:.92rem;font-weight:700;color:var(--gold)">${detectedType}</div></div>`;
+    document.getElementById('dim-check-result').appendChild(badge);
+  }
+
+  showToast(`تم التحقق — ${score} من 8 أبعاد موجودة`);
+}
+
+// ── Open phase 3 + build final prompt ──
+function openPhase3(){
+  const engineered = window._15engineered || document.getElementById('res-lift').value.trim();
+  const additions = document.getElementById('dim-additions')?.value.trim() || '';
+
+  let final = engineered;
+  if(additions){
+    final = engineered + '\n\n[إضافات]:\n' + additions;
+  }
+  window._15prompts.final = final;
+
+  document.getElementById('final-prompt-text').textContent = final;
+  document.getElementById('ph3-block').style.display = 'block';
+  document.getElementById('ph3-block').scrollIntoView({behavior:'smooth', block:'start'});
+  showToast('المرحلة الثالثة مفتوحة — البرومبت النهائي جاهز ✓');
+}
+
+// ── Show comparison ──
+function showComparison(){
+  const weakRes = document.getElementById('res-weak').value.trim();
+  const finalRes = document.getElementById('res-final').value.trim();
+  if(!weakRes || !finalRes){ showToast('الصق نتيجتَي البرومبتين أولاً'); return; }
+  const w = document.getElementById('cmp-weak-result');
+  const f = document.getElementById('cmp-final-result');
+  w.textContent = weakRes.length > 300 ? weakRes.substring(0,300)+'...' : weakRes;
+  f.textContent = finalRes.length > 300 ? finalRes.substring(0,300)+'...' : finalRes;
+  w.style.borderColor = 'rgba(220,53,69,.3)';
+  f.style.borderColor = 'rgba(82,183,136,.4)';
+  showToast('المقارنة جاهزة — ما الفرق الذي تراه؟');
+}
+
+// ── Save prompt to library ──
+function saveToLibrary(){
+  const name = document.getElementById('lib-name').value.trim();
+  const final = window._15prompts.final || '';
+  const task = window._15task || '';
+  if(!name){ showToast('اكتب اسماً للبرومبت أولاً'); return; }
+  if(!final){ showToast('أكمل المراحل الثلاث أولاً'); return; }
+  const lib = getLibrary();
+  const existing = lib.findIndex(p => p.name === name);
+  const type = window._15detectedType || '';
+  const entry = { name, task, prompt: final, type, date: new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'}) };
+  if(existing >= 0) lib[existing] = entry;
+  else lib.push(entry);
+  saveLibrary(lib);
+  renderLibPreview();
+  document.getElementById('lib-preview').style.display = 'block';
+  showToast(`تم حفظ "${name}" في مكتبتك ✓`);
+}
+
+function renderLibPreview(){
+  const list = document.getElementById('lib-list');
+  if(!list) return;
+  const lib = getLibrary();
+  if(!lib.length){
+    list.innerHTML = '<div style="color:var(--text-dim);font-size:.85rem;padding:.5rem">لا توجد برومبتات محفوظة بعد.</div>';
+    return;
+  }
+  list.innerHTML = lib.map((p,i) => `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:.9rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:.5rem">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.2rem">
+          <div style="font-size:.9rem;font-weight:700;color:var(--gold)">${p.name}</div>
+          ${p.type ? `<div style="padding:.15rem .55rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,.2);border-radius:20px;font-size:.7rem;font-weight:700;color:var(--gold)">${{'تحليل':'📊','تحدي':'🔍','تلخيص':'📋','تقييم':'✅','إنتاج':'🖊️','تخطيط':'🎯','تحويل':'🔄','محاكاة':'💬'}[p.type]||'🗂️'} ${p.type}</div>` : ''}
+        </div>
+        <div style="font-size:.78rem;color:var(--text-dim)">${p.task} · ${p.date}</div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-shrink:0">
+        <button onclick="copyLibPrompt(${i})" style="display:flex;align-items:center;gap:.3rem;padding:.35rem .7rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);font-family:'Tajawal',sans-serif;font-size:.75rem;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>نسخ
+        </button>
+        <button onclick="deleteLibPrompt(${i})" style="display:flex;align-items:center;padding:.35rem .6rem;background:var(--red-dim);border:1px solid var(--red-border);border-radius:6px;color:var(--red-text);font-family:'Tajawal',sans-serif;font-size:.75rem;cursor:pointer">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+function copyLibPrompt(i){
+  const lib = getLibrary();
+  if(!lib[i]) return;
+  navigator.clipboard.writeText(lib[i].prompt).then(()=>showToast(`تم نسخ "${lib[i].name}" ✓`));
+}
+
+function deleteLibPrompt(i){
+  const lib = getLibrary();
+  lib.splice(i,1);
+  saveLibrary(lib);
+  renderLibPreview();
+  showToast('تم الحذف');
+}
+
+// ── Raw copy helper ──
+function copyRaw15(which){
+  const map = { weak: window._15prompts?.weak, lift: window._15prompts?.lift, final: window._15prompts?.final };
+  const text = map[which] || '';
+  const btnId = { weak:'cpbtn-weak', lift:'cpbtn-lift', final:'cpbtn-final' }[which];
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.getElementById(btnId);
+    if(btn){ btn.classList.add('copied'); btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> تم'; setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> نسخ'; }, 2000); }
+    showToast('تم النسخ — الصقه في نموذجك الآن');
+  }).catch(()=>showToast('انسخ النص يدوياً'));
+}
+
+// ══════════════════════════════════════════════════════
+// CHALLENGE EVALUATION
+// ══════════════════════════════════════════════════════
+function submitChallenge(){
+  const val=document.getElementById('ch-answer').value.trim();
+  if(!val){showToast('اكتب إجابتك أولاً');return;}
+  showToast('تم حفظ إجابتك ✓');
+}
+
+function requestEval(){
+  const answer=document.getElementById('ch-answer').value.trim();
+  if(!answer){showToast('اكتب إجابتك أولاً ثم اطلب التقييم');return;}
+  const chal=CHALLENGES[currentChallengeChapter];
+  const evalPrompt=`أنت مقيّم تعليمي متخصص في برامج تدريب القيادة على الذكاء الاصطناعي.
+
+مهمتك: تقييم إجابة المتدرب على تحدي الباب بشكل صريح ومفيد — لا مجاملة.
+
+عنوان التحدي:
+${chal.title}
+
+السؤال المطروح:
+${chal.desc}
+
+إجابة المتدرب:
+${answer}
+
+${chal.criteria}
+
+التعليمات:
+- قيّم كل معيار من 1 إلى 5 مع تبرير موجز
+- أعطِ درجة إجمالية من 10 مع تبرير
+- حدد: أقوى نقطة في الإجابة
+- حدد: أهم نقطة مفقودة أو ضعيفة
+- أعطِ توصية واحدة محددة لتحسين الإجابة
+- اللغة: عربية واضحة ومباشرة
+- الأسلوب: ناقد بنّاء — لا مجاملة ولا قسوة غير ضرورية`;
+
+  document.getElementById('eval-prompt-text').textContent=evalPrompt;
+  document.getElementById('eval-flow').classList.add('visible');
+  window.currentEvalPrompt=evalPrompt;
+  document.getElementById('eval-result-display').classList.remove('visible');
+  document.getElementById('eval-result-input').value='';
+}
+
+function copyEvalPrompt(){
+  const text=window.currentEvalPrompt||'';
+  navigator.clipboard.writeText(text).then(()=>showToast('تم نسخ برومبت التقييم — الصقه في نموذجك الآن'));
+}
+
+function showEvalResult(){
+  const val=document.getElementById('eval-result-input').value.trim();
+  if(!val){showToast('الصق نتيجة التقييم من النموذج أولاً');return;}
+  const display=document.getElementById('eval-result-display');
+  display.textContent=val;
+  display.classList.add('visible');
+  showToast('تم عرض التقييم ✓');
+}
+
+// ══════════════════════════════════════════════════════
+// COMPLETE LESSON
+// ══════════════════════════════════════════════════════
+function completeLesson(){
+  const ch=CURRICULUM[currentChapter], lesson=ch.lessons[currentLesson];
+  if(state.completed[lesson.id]) return;
+  state.completed[lesson.id]=Date.now();
+  state.influence=Math.min(100,state.influence+Math.round(100/14));
+  state.fileEntries.push({chapter:ch.num,lesson:lesson.title,date:new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'})});
+  saveState();
+  document.getElementById('complete-btn-text').textContent='تم إتمام هذا الدرس ✓';
+  document.getElementById('btn-complete').classList.add('done');
+  showToast('أحسنت! ارتفع مستوى نفوذك 🏆');
+  playSound();
+}
+
+function playSound(){
+  try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.setValueAtTime(523,c.currentTime);o.frequency.setValueAtTime(659,c.currentTime+.12);o.frequency.setValueAtTime(784,c.currentTime+.24);g.gain.setValueAtTime(.07,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.6);o.start(c.currentTime);o.stop(c.currentTime+.6);}catch(e){}
+}
+
+// ══════════════════════════════════════════════════════
+// FILE
+// ══════════════════════════════════════════════════════
+function showFile(){
+  const entries=document.getElementById('file-entries');
+  entries.innerHTML='';
+  if(!state.fileEntries.length){entries.innerHTML='<div class="file-empty"><p>لم تكتمل أي دروس بعد.</p></div>';}
+  else{state.fileEntries.forEach(e=>{const el=document.createElement('div');el.className='file-entry';el.innerHTML=`<div class="file-entry-chapter">${e.chapter}</div><div class="file-entry-lesson">${e.lesson}</div><div class="file-entry-date">${e.date}</div>`;entries.appendChild(el);});}
+  showScreen('file-view');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER DASHBOARD
+// ══════════════════════════════════════════════════════
+function renderChapters(){
+  const grid=document.getElementById('chapters-grid');
+  grid.innerHTML='';
+  CURRICULUM.forEach((ch,idx)=>{
+    const total=ch.lessons.length,done=ch.lessons.filter(l=>!!state.completed[l.id]).length,pct=Math.round((done/total)*100);
+    const card=document.createElement('div');card.className='chapter-card';card.onclick=()=>showChapter(idx);
+    card.innerHTML=`<div class="chapter-num">${ch.num}</div><div class="chapter-title">${ch.title}</div><div class="chapter-desc">${ch.desc}</div><div class="chapter-lessons-count"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>${total} دروس — ${done} مكتمل</div><div class="chapter-progress"><div class="chapter-progress-bar"><div class="chapter-progress-fill" style="width:${pct}%"></div></div><span class="chapter-progress-text">${pct}%</span></div>`;
+    grid.appendChild(card);
+  });
+}
+
+function updateInfluenceBar(){
+  const pct=state.influence;
+  document.getElementById('influence-bar').style.width=pct+'%';
+  document.getElementById('influence-num').textContent=pct;
+  ['rank-0','rank-1','rank-2','rank-3','rank-4'].forEach(r=>document.getElementById(r).classList.remove('active'));
+  if(pct===0)document.getElementById('rank-0').classList.add('active');
+  else if(pct<=25)document.getElementById('rank-1').classList.add('active');
+  else if(pct<=50)document.getElementById('rank-2').classList.add('active');
+  else if(pct<=75)document.getElementById('rank-3').classList.add('active');
+  else document.getElementById('rank-4').classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════
+// CONTROL CENTER
+// ══════════════════════════════════════════════════════
+function showCC(){
+  updateCCLocks();loadProfile();showScreen('control-center');
+  setTimeout(refreshCCLibrary, 100);
+}
+
+function refreshCCLibrary(){
+  const lib = getLibrary();
+  const el = document.getElementById('cc-lib-list');
+  if(!el) return;
+  if(!lib.length){
+    el.innerHTML = `<div style="padding:1.8rem;text-align:center;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--radius)">
+      <div style="font-size:1.8rem;margin-bottom:.6rem">📭</div>
+      <div style="font-size:.9rem;color:var(--text-dim)">لا توجد برومبتات محفوظة بعد.</div>
+      <div style="font-size:.82rem;color:var(--text-dim);margin-top:.3rem">أكمل الدرس الخامس في الباب الأول وابنِ برومبتاتك.</div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = lib.map((p,i) => `
+    <div style="background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--radius);padding:1.3rem 1.5rem;margin-bottom:.8rem;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(74,144,217,.4)'" onmouseout="this.style.borderColor='var(--cc-border)'">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.8rem">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.25rem">
+            <div style="font-size:.95rem;font-weight:700;color:var(--cc-blue)">${p.name}</div>
+            ${p.type ? `<div style="padding:.2rem .6rem;background:var(--gold-dim);border:1px solid rgba(201,168,76,.25);border-radius:20px;font-size:.72rem;font-weight:700;color:var(--gold)">${{'تحليل':'📊','تحدي':'🔍','تلخيص':'📋','تقييم':'✅','إنتاج':'🖊️','تخطيط':'🎯','تحويل':'🔄','محاكاة':'💬'}[p.type]||'🗂️'} ${p.type}</div>` : ''}
+          </div>
+          <div style="font-size:.78rem;color:var(--text-dim)">${p.task} · ${p.date}</div>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-shrink:0">
+          <button onclick="ccCopyLib(${i})" style="display:flex;align-items:center;gap:.35rem;padding:.4rem .85rem;background:var(--cc-blue-dim);border:1px solid var(--cc-border);border-radius:7px;color:var(--cc-blue);font-family:'Tajawal',sans-serif;font-size:.78rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(74,144,217,.22)'" onmouseout="this.style.background='var(--cc-blue-dim)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            نسخ
+          </button>
+          <button onclick="ccDeleteLib(${i})" style="display:flex;align-items:center;padding:.4rem .6rem;background:var(--red-dim);border:1px solid var(--red-border);border-radius:7px;color:var(--red-text);cursor:pointer;transition:all .2s">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div style="background:var(--cc-bg);border:1px solid var(--cc-border);border-radius:8px;padding:.85rem 1rem;font-size:.82rem;color:var(--text-dim);line-height:1.75;white-space:pre-wrap;direction:rtl;max-height:120px;overflow:hidden;position:relative">
+        ${p.prompt.substring(0,350)}${p.prompt.length>350?'...':''}
+      </div>
+    </div>`).join('');
+}
+
+function ccCopyLib(i){
+  const lib = getLibrary();
+  if(!lib[i]) return;
+  navigator.clipboard.writeText(lib[i].prompt).then(()=>showToast(`تم نسخ "${lib[i].name}" — الصقه في نموذجك الآن ✓`));
+}
+
+function ccDeleteLib(i){
+  if(!confirm('هل تريد حذف هذا البرومبت من المكتبة؟')) return;
+  const lib = getLibrary();
+  lib.splice(i,1);
+  saveLibrary(lib);
+  refreshCCLibrary();
+  showToast('تم الحذف من المكتبة');
+}
+
+function updateCCLocks(){
+  const ch1Done=CURRICULUM[0].lessons.every(l=>!!state.completed[l.id]);
+  const ch2Done=CURRICULUM[1].lessons.every(l=>!!state.completed[l.id]);
+  const t2=document.getElementById('tool-2'),t2l=document.getElementById('tool-2-lock');
+  const t3=document.getElementById('tool-3'),t3l=document.getElementById('tool-3-lock');
+  if(ch1Done){t2.classList.remove('locked');t2l.style.display='none';}
+  else{t2.classList.add('locked');t2l.style.display='flex';t2l.textContent='يُفتح بعد إتمام الباب الأول';}
+  if(ch2Done){t3.classList.remove('locked');t3l.style.display='none';}
+  else{t3.classList.add('locked');t3l.style.display='flex';t3l.textContent='يُفتح بعد إتمام الباب الثاني';}
+}
+
+function saveProfile(){
+  state.profile={field:document.getElementById('cc-field').value,audience:document.getElementById('cc-audience').value,output:document.getElementById('cc-output').value};
+  saveState();
+}
+
+function loadProfile(){
+  if(state.profile){
+    if(state.profile.field)document.getElementById('cc-field').value=state.profile.field;
+    if(state.profile.audience)document.getElementById('cc-audience').value=state.profile.audience;
+    if(state.profile.output)document.getElementById('cc-output').value=state.profile.output;
+  }
+}
+
+const FIELD_L={consulting:'استشارات وتدريب',startup:'ريادة أعمال',executive:'قيادة تنفيذية',marketing:'تسويق واتصال',operations:'عمليات وتشغيل',finance:'مالية واستثمار','':"مجال عملك"};
+const AUD_L={board:'مجلس الإدارة',team:'الفريق التنفيذي',clients:'العملاء',investors:'المستثمرين',mixed:'جمهور متعدد','':"الجمهور"};
+const OUT_L={table:'جدول مقارن',points:'نقاط تنفيذية',narrative:'سرد تحليلي',matrix:'مصفوفة قرار','':"صيغة الإخراج"};
+
+function generatePrompt(){
+  const task=document.getElementById('t1-task').value;
+  const ctx=document.getElementById('t1-ctx').value.trim();
+  if(!ctx){showToast('اكتب وصفاً لمهمتك أولاً');return;}
+  const f=FIELD_L[state.profile?.field||''];
+  const a=AUD_L[state.profile?.audience||''];
+  const o=OUT_L[state.profile?.output||''];
+  const T={
+    analysis:`[الدور]: أنت مستشار ${f} متخصص في السياق السعودي والخليجي.
+
+[الهدف]: حلّل الأسباب الجذرية للتحدي التالي:
+«${ctx}»
+
+[القيود]:
+- لا تقترح حلولاً في هذه المرحلة
+- لا تفترض بيانات غير مذكورة
+- ركّز على الأسباب الجذرية فقط
+
+[الجمهور]: ${a}
+[صيغة الإخراج]: ${o} — الأسباب مصنّفة حسب مستوى الأثر (عالٍ/متوسط/منخفض)
+[مستوى العمق]: تحليلي متوسط
+[معيار النجاح]: لا يقل عن 5 أسباب جذرية قابلة للقياس`,
+    summary:`[الدور]: أنت متخصص في التواصل التنفيذي في بيئات ${f}.
+
+[الهدف]: لخّص المحتوى التالي:
+«${ctx}»
+
+[القيود]:
+- لا تتجاوز 5 نقاط رئيسية
+- لا تضف تحليلاً من عندك
+- لغة واضحة غير تقنية
+
+[الجمهور]: ${a}
+[صيغة الإخراج]: ${o} مرتّبة حسب الأولوية
+[مستوى العمق]: ملخص تنفيذي دقيق`,
+    challenge:`[الدور]: أنت ناقد استراتيجي محايد في ${f}.
+
+[الهدف]: اختبر صحة الفرضية التالية:
+«${ctx}»
+
+[القيود]:
+- لا تدعم الفرضية — ابحث عن نقاط ضعفها
+- لا تقترح بدائل في هذه المرحلة
+- كن محدداً لا عاماً
+
+[الإخراج]: 5 اعتراضات مرتّبة حسب قوة الأثر مع تبرير كل منها`,
+    evaluate:`[الدور]: أنت مستشار قرار في ${f}.
+
+[الهدف]: قيّم الخيار التالي:
+«${ctx}»
+
+[القيود]:
+- لا تتخذ القرار — قدّم عوامل التقييم فقط
+- ميّز بين الحقائق والافتراضات
+
+[الجمهور]: ${a}
+[صيغة الإخراج]: ${o} — المعيار، الوزن، التقييم (1-5)، الملاحظة`,
+    plan:`[الدور]: أنت مخطط استراتيجي في ${f}.
+
+[الهدف]: ضع إطار مبادرة أولي لـ:
+«${ctx}»
+
+[القيود]:
+- لا تدخل في التفاصيل التشغيلية بعد
+- ركّز على الهيكل والمراحل الكبرى
+
+[الجمهور]: ${a}
+[الإخراج]: خارطة مبادرة — الهدف، المراحل، الموارد الأساسية، مؤشرات النجاح`,
+    review:`[الدور]: أنت مدقق محتوى في ${f}.
+
+[الهدف]: راجع المحتوى التالي:
+«${ctx}»
+
+[القيود]:
+- لا تعيد الكتابة — أشر للمشاكل فقط
+- صنّف: حرجة / مهمة / اقتراح
+
+[الجمهور]: ${a}
+[صيغة الإخراج]: ${o} — المشكلة، نوعها، المقترح`
+  };
+  const result=T[task]||T.analysis;
+  const el=document.getElementById('t1-out');
+  document.getElementById('t1-out-text').textContent=result;
+  el.classList.add('visible');
+}
+
+function copyCC(id){
+  const text=document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(()=>showToast('تم النسخ — الصقه في نموذجك الآن'));
+}
+
+function toggleCheck(el){el.classList.toggle('checked');}
+
+function auditOutput(){
+  const card=document.getElementById('tool-2');
+  if(card.classList.contains('locked')){showToast('هذه الأداة تُفتح بعد إتمام الباب الأول');return;}
+  const content=document.getElementById('t2-content').value.trim();
+  if(!content){showToast('الصق المحتوى للتدقيق أولاً');return;}
+  const checked=document.querySelectorAll('#t2-checks .check-item.checked').length;
+  const total=document.querySelectorAll('#t2-checks .check-item').length;
+  const riskEl=document.getElementById('t2-risk');
+  let cls,level,msg;
+  if(checked===0){cls='r-low';level='منخفض';msg='لم تُحدَّد علامات تحذيرية واضحة. هذا لا يعني أن المحتوى خالٍ من الأخطاء — راجع الأرقام والحقائق الدقيقة يدوياً قبل الاعتماد في أي قرار.';}
+  else if(checked<=2){cls='r-med';level='متوسط';msg=`تم تحديد ${checked} علامة تحذيرية. راجع هذه النقاط تحديداً قبل اعتماد المحتوى، خاصة إذا كان القرار يؤثر على الآخرين أو يتضمن أرقاماً مالية.`;}
+  else{cls='r-high';level='عالٍ';msg=`تم تحديد ${checked} من ${total} علامات تحذيرية. هذا المحتوى يحتاج مراجعة بشرية دقيقة. لا تعتمده في قرارات حساسة دون التحقق من كل نقطة مشكوك فيها.`;}
+  document.getElementById('t2-risk-lvl').innerHTML=`<div class="risk-lvl ${cls}">مستوى المخاطرة: ${level}</div>`;
+  document.getElementById('t2-risk-txt').textContent=msg;
+  riskEl.classList.add('visible');
+}
+
+function fixDrift(){
+  const card=document.getElementById('tool-3');
+  if(card.classList.contains('locked')){showToast('هذه الأداة تُفتح بعد إتمام الباب الثاني');return;}
+  const goal=document.getElementById('t3-goal').value.trim();
+  const last=document.getElementById('t3-last').value.trim();
+  const type=document.getElementById('t3-type').value;
+  if(!goal||!last){showToast('أدخل الهدف الأصلي وآخر رد');return;}
+  const fixes={
+    topic:`توقف تماماً.
+
+هدفنا الأصلي — ولا شيء غيره — هو:
+«${goal}»
+
+آخر رد انحرف عن هذا الهدف. أعد توجيه تفكيرك بالكامل:
+- تجاهل أي مسارات ذكرتها في ردودك السابقة
+- ابدأ من الهدف الأصلي فقط
+- أجب مباشرة: ما العوامل المؤثرة على «${goal}»؟`,
+    depth:`توقف. التحليل أصبح سطحياً.
+
+هدفنا: «${goal}»
+
+أعد التحليل بعمق أكبر:
+- فكّك كل سبب إلى مستوى أعمق بمستوى واحد
+- اذكر الافتراضات التي تبني عليها
+- حدد مستوى الثقة في كل نقطة
+- اعتمد فقط على المعلومات الموجودة في السياق`,
+    solution:`توقف عن اقتراح الحلول.
+
+نحن في مرحلة التحليل فقط. الهدف: «${goal}»
+
+المطلوب حصراً:
+- تحليل الأسباب والعوامل المؤثرة
+- لا حلول، لا توصيات، لا "يمكنك أن..."
+الإخراج: جدول بالأسباب مع مستوى الأثر فقط`,
+    repeat:`لاحظت أنك تكرر ما ذكرته سابقاً.
+
+قبل المتابعة، لخّص ما تم الاتفاق عليه في 5 نقاط فقط — لا تضف معلومات جديدة:
+1. المشكلة الأصلية
+2. الهدف المتفق عليه: «${goal}»
+3. أهم استنتاج توصلنا إليه
+4. النقطة الأكثر هشاشة
+5. الخطوة التالية المنطقية
+
+سنبدأ من هذا الملخص فقط.`
+  };
+  const out=document.getElementById('t3-out');
+  document.getElementById('t3-out-text').textContent=fixes[type];
+  out.classList.add('visible');
+}
+
+// ══════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-text').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  loadState();
+  if(state.userName){
+    document.getElementById('user-name-input').value=state.userName;
+    document.getElementById('display-name').textContent=state.userName;
+    document.getElementById('file-name').textContent='ملف القائد — '+state.userName;
+    renderChapters();showScreen('dashboard');
+    setTimeout(()=>updateInfluenceBar(),300);
+  }
+});
+</script>
+</body>
+</html>
