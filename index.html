@@ -669,7 +669,7 @@ body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min
       </div>
     </div>
     <!-- قائمة الجلسات -->
-    <div class="dash-section-title">رحلتك التدريبية — 7 جلسات</div>
+    <div class="dash-section-title">رحلتك — 7 جلسات</div>
     <div class="sessions-list" id="sessions-list"></div>
   </div>
 </div>
@@ -724,10 +724,26 @@ body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min
   </div>
 </div>
 
+<!-- SESSION VIEW -->
+<div id="session-view" class="screen">
+  <div class="chapter-topbar">
+    <button class="btn-back" onclick="showDashboard()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>العودة</button>
+    <span id="sv-session-tag" style="font-size:.9rem;color:var(--text-dim);flex:1;text-align:center;"></span>
+  </div>
+  <div class="chapter-view-body">
+    <div class="chapter-hero">
+      <div class="chapter-hero-num" id="sv-session-badge"></div>
+      <div class="chapter-hero-title" id="sv-session-title"></div>
+      <div class="chapter-hero-goal" id="sv-session-desc"></div>
+    </div>
+    <div class="lessons-list" id="sv-lessons-list"></div>
+  </div>
+</div>
+
 <!-- LESSON VIEW -->
 <div id="lesson-view" class="screen">
   <div class="lesson-topbar">
-    <button class="btn-back" onclick="showChapter(currentChapter)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>العودة</button>
+    <button class="btn-back" onclick="openSession(currentSessionIdx)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>العودة</button>
     <div class="lesson-topbar-title" id="lesson-topbar-title"></div>
     <div style="width:80px"></div>
   </div>
@@ -754,14 +770,14 @@ body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min
       <div class="pemp-header">
         <div class="pemp-icon">📌</div>
         <div>
-          <div class="pemp-title">التزامي من هذا الدرس</div>
+          <div class="pemp-title">التزامي من هذه الوحدة</div>
           <div class="pemp-sub">اكتب شيئاً واحداً محدداً ستفعله قبل الجلسة القادمة<br>لا يُفعَّل زر الإتمام إلا بعد الكتابة</div>
         </div>
       </div>
       <textarea class="pemp-input" id="pemp-input" placeholder="سأطبّق _____ على مشروع _____ قبل _____" oninput="onPempInput()"></textarea>
       <button class="btn-complete-session" id="btn-complete-session" onclick="completeLesson()" disabled>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span id="complete-btn-text">إتمام الدرس وحفظ الالتزام</span>
+        <span id="complete-btn-text">إتمام الوحدة وحفظ الالتزام</span>
       </button>
     </div>
   </div>
@@ -919,7 +935,7 @@ body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.8rem">
           <div>
             <div style="font-size:1rem;font-weight:700">📚 مكتبة البرومبتات</div>
-            <div style="font-size:.8rem;color:var(--text-dim);margin-top:.15rem">البرومبتات التي بنيتها وحفظتها من الدرس الخامس</div>
+            <div style="font-size:.8rem;color:var(--text-dim);margin-top:.15rem">البرومبتات التي بنيتها وحفظتها من الوحدة الخامسة</div>
           </div>
           <button onclick="refreshCCLibrary()" style="display:flex;align-items:center;gap:.4rem;padding:.45rem 1rem;background:var(--cc-blue-dim);border:1px solid var(--cc-border);border-radius:8px;color:var(--cc-blue);font-family:'Tajawal',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(74,144,217,.22)'" onmouseout="this.style.background='var(--cc-blue-dim)'">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
@@ -1163,9 +1179,9 @@ const EX = {
   ],
   p2:`ما الافتراضات التي بنيت عليها هذا التحليل؟ وما درجة ثقتك في كل افتراض من 1 إلى 5؟`,
   reflect:"قبل وبعد سؤال الافتراضات — كيف تغيّرت ثقتك بالتحليل؟",
-  reveal:`الدرس الجوهري:
+  reveal:`الوحدة الجوهرية:
 
-الخطوة الأكثر قيمة التي ستأخذها من هذا الدرس:
+الخطوة الأكثر قيمة التي ستأخذها من هذه الوحدة:
 قبل اعتماد أي تحليل استراتيجي — اسأل دائماً:
 "ما الافتراضات التي بنيت عليها؟"
 
@@ -1312,7 +1328,7 @@ const EX = {
 
 بعد الجدول: أضف توصية واحدة — أي نموذج يناسب المدير السعودي كنموذج رئيسي وأي نموذج كمكمّل؟`,
   p2_activity:true,
-  p2:`احتفظ بهذا الجدول — ستستخدمه في الدرس التالي.
+  p2:`احتفظ بهذا الجدول — ستستخدمه في الوحدة التالية.
 
 الآن لاحظ:
 - أي غاية تفاجأت بنتيجتها؟
@@ -1324,7 +1340,7 @@ const EX = {
 • لا يوجد "أفضل مطلق" — يوجد "أنسب لهذه الغاية"
 • النموذج الذي يقيّم نفسه يُظهر انحيازه — وهذا معلومة بحد ذاتها
 • الجدول يتغير مع كل تحديث للنماذج — أعد تشغيل البرومبت كل 3 أشهر
-• احتفظ بالجدول في مكتبتك — هو مرجعك لاختيار النموذج في الدرس التالي`
+• احتفظ بالجدول في مكتبتك — هو مرجعك لاختيار النموذج في الوحدة التالية`
 },
 "3-4":{
   type:"ج",typeLabel:"تطبيق على الواقع",
@@ -1333,7 +1349,7 @@ const EX = {
   p_bridge_label:"الصق توزيع النماذج الذي أكملته هنا — سيُدمج تلقائياً في البرومبت التالي",
   desc:"خذ مشروعاً أو مبادرة حالية وقرر: هل يستحق استخدام نماذج مختلفة في مراحل مختلفة؟ أم أن نموذجاً واحداً يكفي؟",
   p1_activity:true,
-  p1:`ارجع لجدول المقارنة الذي بنيته في الدرس السابق.
+  p1:`ارجع لجدول المقارنة الذي بنيته في الوحدة السابقة.
 اختر مشروعاً حالياً وقسّمه لـ 4 مراحل — لكل مرحلة اختر النموذج من الجدول:
 
 المرحلة 1 — التشخيص والتحليل:
@@ -1423,17 +1439,17 @@ const CURRICULUM = [
     id:0,num:"الباب الأول",
     title:"هندسة البرومبت والتعاون مع الآلة",
     desc:"تحويلك من كاتب أوامر إلى مصمم حوار استراتيجي",
-    goal:"الهدف: تحويل المتدرب من كاتب أوامر إلى مصمم حوار استراتيجي يقود النموذج بوعي ودقة.",
+    goal:"الهدف: تحويل العضو من كاتب أوامر إلى مصمم حوار استراتيجي يقود النموذج بوعي ودقة.",
     lessons:[
-      {id:"1-1",title:"ما هو البرومبت فعلياً؟ (تصحيح الفهوم)",objective:"نقل المتدرب من «البرومبت = سؤال» إلى «البرومبت = تصميم بيئة تفكير للنموذج».",
-      content:`<div class="hbox gold"><p><strong>مرحباً بك في الكورس.</strong> ستخرج من هذه الأبواب الثلاثة بمهارة واحدة محددة: التحكم في جودة مخرجات الذكاء الاصطناعي بدلاً من قبولها كما تأتي. كل درس فيه تمرين حقيقي — لا محاضرة.</p></div><p>أغلب الناس يتعامل مع الذكاء الاصطناعي كجوجل — يكتب سؤالاً وينتظر إجابة. هذه هي نقطة البداية الخاطئة.</p><h3>النموذج يقرأ ما كتبته فقط</h3><p>النموذج لا يخمّن ما تقصده. يتعامل مع ما كتبتبه حرفياً. لا يقرأ بين السطور. ما يتفاعل معه فعلاً: السياق الذي تقدمه، القيود التي تضعها، الدور الذي تحدده، شكل الإخراج المطلوب.</p><h3>الفرق الجوهري</h3><div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">❌ سؤال عادي</div>«كيف أزيد مبيعاتي؟»<br><br>النتيجة: عموميات، لغة إنشائية، لا قيمة تنفيذية.</div><div class="cmp-item good"><div class="cmp-lbl">✓ تعليمات محددة</div>دور + هدف + سياق + قيود + شكل الإجابة = نتيجة تستخدمها مباشرة</div></div><div class="hbox gold"><p><strong style="color:var(--gold)">البرومبت هو:</strong> مجموعة تعليمات مصممة لضبط طريقة تفكير النموذج — لا مجرد طلب نتيجة.</p><p>أنت لا تطلب إجابة — أنت تصمم بيئة تفكير كاملة.</p></div><h3>القاعدة الأساسية</h3><p>المخرجات الضعيفة في 90% من الحالات سببها إدخال ضعيف. Garbage In = Garbage Out. قبل أن تلوم النموذج، راجع برومبتك أولاً.</p>`},
-      {id:"1-2",title:"العناصر الثمانية لبناء طلب فعّال",objective:"نقل المتدرب من «أحاول أحسّن طريقة كتابتي» إلى «عندي إطار ثابت أرجع له في كل مرة».",
+      {id:"1-1",title:"ما هو البرومبت فعلياً؟ (تصحيح الفهوم)",objective:"نقل العضو من «البرومبت = سؤال» إلى «البرومبت = تصميم بيئة تفكير للنموذج».",
+      content:`<div class="hbox gold"><p><strong>مرحباً بك في البرنامج.</strong> ستخرج من هذه الأبواب الثلاثة بمهارة واحدة محددة: التحكم في جودة مخرجات الذكاء الاصطناعي بدلاً من قبولها كما تأتي. كل وحدة فيها تمرين حقيقي — لا محاضرة.</p></div><p>أغلب الناس يتعامل مع الذكاء الاصطناعي كجوجل — يكتب سؤالاً وينتظر إجابة. هذه هي نقطة البداية الخاطئة.</p><h3>النموذج يقرأ ما كتبته فقط</h3><p>النموذج لا يخمّن ما تقصده. يتعامل مع ما كتبتبه حرفياً. لا يقرأ بين السطور. ما يتفاعل معه فعلاً: السياق الذي تقدمه، القيود التي تضعها، الدور الذي تحدده، شكل الإخراج المطلوب.</p><h3>الفرق الجوهري</h3><div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">❌ سؤال عادي</div>«كيف أزيد مبيعاتي؟»<br><br>النتيجة: عموميات، لغة إنشائية، لا قيمة تنفيذية.</div><div class="cmp-item good"><div class="cmp-lbl">✓ تعليمات محددة</div>دور + هدف + سياق + قيود + شكل الإجابة = نتيجة تستخدمها مباشرة</div></div><div class="hbox gold"><p><strong style="color:var(--gold)">البرومبت هو:</strong> مجموعة تعليمات مصممة لضبط طريقة تفكير النموذج — لا مجرد طلب نتيجة.</p><p>أنت لا تطلب إجابة — أنت تصمم بيئة تفكير كاملة.</p></div><h3>القاعدة الأساسية</h3><p>المخرجات الضعيفة في 90% من الحالات سببها إدخال ضعيف. Garbage In = Garbage Out. قبل أن تلوم النموذج، راجع برومبتك أولاً.</p>`},
+      {id:"1-2",title:"العناصر الثمانية لبناء طلب فعّال",objective:"نقل العضو من «أحاول أحسّن طريقة كتابتي» إلى «عندي إطار ثابت أرجع له في كل مرة».",
       content:`<p>جودة النتيجة تعتمد على اكتمال طلبك — مش على طوله أو تعقيده.</p><div class="dim-grid"><div class="dim-item"><div class="dim-num">01</div><div class="dim-name">الدور</div><div class="dim-desc">حدد للنموذج من هو في هذا الطلب. طبيب؟ مستشار مالي؟ محلل سوق؟ كل دور يغير طريقة الإجابة.</div></div><div class="dim-item"><div class="dim-num">02</div><div class="dim-name">الهدف</div><div class="dim-desc">لا تقل «حلّل» فقط. قل بالضبط ماذا تريد. مثال: «استخرج الأسباب الرئيسية لانخفاض المبيعات».</div></div><div class="dim-item"><div class="dim-num">03</div><div class="dim-name">السياق</div><div class="dim-desc">أعطِ النموذج المعلومات الضرورية. بدون سياق ستحصل على إجابة عامة لا تخصّك.</div></div><div class="dim-item"><div class="dim-num">04</div><div class="dim-name">القيود</div><div class="dim-desc">وضّح ما لا تريده. هذا يمنع النموذج من الخروج عن الموضوع.</div></div><div class="dim-item"><div class="dim-num">05</div><div class="dim-name">الجمهور</div><div class="dim-desc">من سيقرأ النتيجة؟ مجلس إدارة؟ فريق تنفيذي؟ عميل؟ الأسلوب يتغير بناءً على ذلك.</div></div><div class="dim-item"><div class="dim-num">06</div><div class="dim-name">شكل الإجابة</div><div class="dim-desc">جدول؟ نقاط؟ ملخص قصير؟ إذا ما حددت ستحصل على شكل عشوائي.</div></div><div class="dim-item"><div class="dim-num">07</div><div class="dim-name">مستوى التفصيل</div><div class="dim-desc">هل تريد نظرة عامة سريعة أم تحليلاً معمّقاً؟ حدد هذا من البداية.</div></div><div class="dim-item"><div class="dim-num">08</div><div class="dim-name">معيار النجاح</div><div class="dim-desc">كيف تعرف أن الإجابة مفيدة؟ هذا العنصر يرفع جودة النتيجة بشكل واضح.</div></div></div>`},
-      {id:"1-3",title:"التعاون مع الذكاء الاصطناعي: من طلب واحد إلى حوار",objective:"نقل المتدرب من «أكتب طلباً وآخذ الإجابة» إلى «أبني حواراً خطوة بخطوة يوصلني لنتيجة أعمق».",
+      {id:"1-3",title:"التعاون مع الذكاء الاصطناعي: من طلب واحد إلى حوار",objective:"نقل العضو من «أكتب طلباً وآخذ الإجابة» إلى «أبني حواراً خطوة بخطوة يوصلني لنتيجة أعمق».",
       content:`<p>الإجابة الأولى ليست الهدف — هي نقطة البداية.</p><div class="hbox"><p><strong style="color:var(--gold)">الخطوة 1 — استكشف:</strong> ابدأ بسؤال مفتوح. لا تطلب حلولاً بعد — اطلب فهم الصورة الكاملة أولاً.</p><p><strong style="color:var(--gold)">الخطوة 2 — ضيّق:</strong> وجّه النموذج لزاوية محددة. هنا تبدأ تحصل على إجابات مفيدة فعلاً.</p><p><strong style="color:var(--gold)">الخطوة 3 — تحقق:</strong> اسأله عن افتراضاته ونقاط ضعف تحليله. استخدمه كمدقق لنفسه.</p></div><div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">❌ طلب واحد</div>«اقترح خطة»<br>إجابة سريعة وسطحية.</div><div class="cmp-item good"><div class="cmp-lbl">✓ حوار خطوة بخطوة</div>استكشف ← ضيّق ← تحقق ← لخّص</div></div><p>القاعدة: <strong>الإجابة الجيدة تأتي من حوار مدار بشكل صحيح</strong> — مش من الطلب الأول.</p>`},
-      {id:"1-4",title:"لما تنحرف المحادثة — كيف تعيدها لمسارها",objective:"نقل المتدرب من «المحادثة تشتتت» إلى «أعرف كيف أضبطها وأرجعها للموضوع».",
+      {id:"1-4",title:"لما تنحرف المحادثة — كيف تعيدها لمسارها",objective:"نقل العضو من «المحادثة تشتتت» إلى «أعرف كيف أضبطها وأرجعها للموضوع».",
       content:`<p>النموذج يعتمد على كل ما قيل في المحادثة. كلما طالت — تتراكم المعلومات ويبدأ يخرج عن الموضوع.</p><div class="hbox gold"><p><strong style="color:var(--gold)">أداة التلخيص:</strong> اطلب منه «لخّص ما اتفقنا عليه في 5 نقاط فقط» — ثم أكمل من الملخص.</p><p><strong style="color:var(--gold)">إعادة التركيز:</strong> قل له بوضوح «هدفنا هو ___ . تجاهل أي شيء آخر.»</p><p><strong style="color:var(--gold)">فصل الخطوات:</strong> تحليل ← تضييق ← اختبار ← تلخيص. كل خطوة لوحدها.</p></div>`},
-      {id:"1-5",title:"ابنِ مكتبتك الخاصة من الطلبات الجاهزة",objective:"نقل المتدرب من «أكتب طلباً جديداً كل مرة» إلى «عندي مكتبة جاهزة أرجع لها وأعيد استخدامها».",
+      {id:"1-5",title:"ابنِ مكتبتك الخاصة من الطلبات الجاهزة",objective:"نقل العضو من «أكتب طلباً جديداً كل مرة» إلى «عندي مكتبة جاهزة أرجع لها وأعيد استخدامها».",
       content:`<p>المحترف ما يبدأ من الصفر في كل مرة. مكتبة منظمة = توفير وقت + نتائج ثابتة + سرعة في الإنجاز.</p><div class="hbox gold"><p>ابنِ أول طلب محكم لمهمة حقيقية من عملك — وهذا يكون بداية مكتبتك.</p></div>`}
     ]
   },
@@ -1443,15 +1459,15 @@ const CURRICULUM = [
     desc:"بناء مستخدم واعٍ بحدود التقنية، قادر على تقليل المخاطر",
     goal:"الهدف: بناء مستخدم واعٍ بحدود التقنية، قادر على تقليل المخاطر، يملك بروتوكول استخدام مسؤول.",
     lessons:[
-      {id:"2-1",title:"ما الذي يُجيده الذكاء الاصطناعي وما الذي يُخطئ فيه؟",objective:"نقل المتدرب من «النموذج ذكي ويعرف كل شيء» إلى «أعرف متى أثق به ومتى أتحقق بنفسي».",
+      {id:"2-1",title:"ما الذي يُجيده الذكاء الاصطناعي وما الذي يُخطئ فيه؟",objective:"نقل العضو من «النموذج ذكي ويعرف كل شيء» إلى «أعرف متى أثق به ومتى أتحقق بنفسي».",
       content:`<p>الذكاء الاصطناعي في جوهره نظام يتنبأ بالكلمة التالية — لا يفهم ما تقصده، ولا يتحقق من صحة ما يقوله.</p><div class="cmp-grid"><div class="cmp-item good"><div class="cmp-lbl">✓ يتفوق في</div>توليد أفكار وبدائل بسرعة<br>تلخيص النصوص وإعادة ترتيبها<br>صياغة المحتوى وتحسينه<br>استخراج الأنماط من كميات كبيرة من النص</div><div class="cmp-item bad"><div class="cmp-lbl">❌ يخطئ في</div>الأرقام والإحصاءات الدقيقة<br>التحليل حين تكون المعلومات ناقصة<br>المسائل القانونية والتنظيمية<br>التنبؤ بما سيحدث مستقبلاً</div></div><div class="hbox gold"><p><strong style="color:var(--gold)">أهم شيء تتذكره:</strong> إجابة مرتبة ومنطقية لا تعني إجابة صحيحة. النموذج يكتب بثقة حتى حين يكون مخطئاً.</p><p><strong>الأسلوب الجيد ≠ المعلومة الصحيحة.</strong></p></div>`},
-      {id:"2-2",title:"الأخطاء التي لا تراها — كيف تكتشفها قبل فوات الأوان",objective:"نقل المتدرب من «الإجابة تبدو صحيحة» إلى «أعرف أين أبحث عن الخطأ قبل أن أبني عليه».",
+      {id:"2-2",title:"الأخطاء التي لا تراها — كيف تكتشفها قبل فوات الأوان",objective:"نقل العضو من «الإجابة تبدو صحيحة» إلى «أعرف أين أبحث عن الخطأ قبل أن أبني عليه».",
       content:`<div class="hbox"><p><strong style="color:var(--gold)">النمط الأول — الموافقة:</strong> النموذج يميل لتأييد ما تطرحه عليه. إذا قدّمت له فكرة — سيجد لها مبررات حتى لو كانت غلط.</p></div><div class="hbox"><p><strong style="color:var(--gold)">النمط الثاني — الثقة الزائدة:</strong> يعطيك استنتاجات قاطعة دون أن يذكر حدود معرفته أو الشروط التي تجعل هذه الاستنتاجات صحيحة.</p></div><div class="hbox"><p><strong style="color:var(--gold)">النمط الثالث — الحياد المبالغ فيه:</strong> يتجنب المواقف الواضحة ويعطيك إجابة وسطية آمنة — حتى حين يكون الجواب الصحيح واضحاً.</p></div><div class="cmp-grid"><div class="cmp-item good"><div class="cmp-lbl">خطأ بسيط</div>رقم غير دقيق — تكتشفه بسهولة وتصححه.</div><div class="cmp-item bad"><div class="cmp-lbl">❌ خطأ خفي</div>تحليل كامل مبني على افتراض خاطئ — لا يبدو واضحاً وقد يقودك لقرار تندم عليه.</div></div>`},
-      {id:"2-3",title:"قبل ما تبني على النتيجة — تحقق منها",objective:"نقل المتدرب من «أعرف إن فيه أخطاء محتملة» إلى «عندي طريقة واضحة أتحقق فيها قبل أي قرار».",
+      {id:"2-3",title:"قبل ما تبني على النتيجة — تحقق منها",objective:"نقل العضو من «أعرف إن فيه أخطاء محتملة» إلى «عندي طريقة واضحة أتحقق فيها قبل أي قرار».",
       content:`<p>أربعة أنواع من المخاطر لما تبني على تحليل غير متحقق منه:</p><div class="dim-grid"><div class="dim-item"><div class="dim-name">مخاطر المعلومات</div><div class="dim-desc">التحليل مبني على بيانات ناقصة أو افتراضات ما ذُكرت.</div></div><div class="dim-item"><div class="dim-name">مخاطر التنفيذ</div><div class="dim-desc">تنفّذ قراراً بناءً على تحليل فيه ثغرات.</div></div><div class="dim-item"><div class="dim-name">مخاطر مالية</div><div class="dim-desc">تستثمر بناءً على أرقام سوق غير موثقة.</div></div><div class="dim-item"><div class="dim-name">مخاطر السمعة</div><div class="dim-desc">تشارك معلومة غير دقيقة أمام عميل أو في اجتماع.</div></div></div><div class="hbox gold"><p><strong style="color:var(--gold)">السؤال الذي يكشف كل شيء:</strong> «على ماذا بنيت هذا التحليل؟» — سؤال واحد يظهر لك أين الهشاشة في أي نتيجة.</p><p><strong style="color:var(--gold)">القاعدة الثابتة:</strong> الذكاء الاصطناعي يحلل — أنت تقرر. ما تخلط بين الدورين.</p></div>`},
-      {id:"2-4",title:"استخدام الذكاء الاصطناعي بمسؤولية — ما الذي يجب أن تعرفه",objective:"نقل المتدرب من «هل النتيجة صحيحة؟» إلى «هل طريقة استخدامي مسؤولة؟»",
+      {id:"2-4",title:"استخدام الذكاء الاصطناعي بمسؤولية — ما الذي يجب أن تعرفه",objective:"نقل العضو من «هل النتيجة صحيحة؟» إلى «هل طريقة استخدامي مسؤولة؟»",
       content:`<div class="hbox"><p><strong style="color:var(--gold)">الوضوح مع الآخرين:</strong> لو استخدمت الذكاء الاصطناعي في تقرير أو تحليل — كن واضحاً بذلك. إخفاء المصدر حتى بدون قصد يبني توقعات غلط عند الآخرين.</p></div><div class="hbox"><p><strong style="color:var(--gold)">النزاهة في المعلومات:</strong> «النموذج قال كذا» ليست إجابة كافية في بيئة العمل. أنت المسؤول عن التحقق من أي معلومة حساسة قبل أن تبني عليها.</p></div><div class="hbox"><p><strong style="color:var(--gold)">العدالة في القرارات:</strong> لو القرار يمس أشخاصاً — تأكد إن التحليل ما فيه انحياز غير مقصود ناتج عن طريقة صياغة سؤالك.</p></div><div class="hbox"><p><strong style="color:var(--gold)">المسؤولية تبقى عندك:</strong> مهما كانت النتيجة جيدة — القرار النهائي ومسؤوليته لك أنت. النموذج أداة، مش شريك في القرار.</p></div><div class="hbox gold"><p>التمرين يبدأ بتشخيص واقعك الفعلي — ثم تبني قواعد استخدامك الشخصية بمساعدة النموذج.</p></div>`},
-      {id:"2-5",title:"ابنِ قواعد استخدامك الشخصية",objective:"نقل المتدرب من «أنا واعٍ بالمخاطر» إلى «عندي قواعد واضحة أطبقها قبل كل مهمة».",
+      {id:"2-5",title:"ابنِ قواعد استخدامك الشخصية",objective:"نقل العضو من «أنا واعٍ بالمخاطر» إلى «عندي قواعد واضحة أطبقها قبل كل مهمة».",
       content:`<div class="hbox gold"><p>استخدم النموذج نفسه لبناء قواعدك — أدخل مجالك وطبيعة عملك وسيساعدك تبني إطاراً عملياً من أربعة محاور: متى تستخدمه، ما الذي لن تدخله، من يراجع النتيجة، وكيف توثّق استخدامك.</p></div><div class="hbox"><p><strong style="color:var(--gold)">الهدف:</strong> قواعد قصيرة تقدر تقرأها في 30 ثانية قبل أي مهمة — مش وثيقة تُحفظ ولا تُقرأ.</p></div>`}
     ]
   },
@@ -1459,16 +1475,16 @@ const CURRICULUM = [
     id:2,num:"الباب الثالث",
     title:"اختيار النموذج وسيناريوهات حل المشكلات",
     desc:"تحويلك من مستخدم عشوائي للأدوات إلى صانع قرار تقني واعٍ",
-    goal:"الهدف: تحويل المتدرب من مستخدم عشوائي إلى صانع قرار تقني واعٍ يختار النموذج بمنهجية.",
+    goal:"الهدف: تحويل العضو من مستخدم عشوائي إلى صانع قرار تقني واعٍ يختار النموذج بمنهجية.",
     lessons:[
-      {id:"3-1",title:"كيف تختار النموذج المناسب لكل مهمة؟",objective:"نقل المتدرب من «أستخدم ما أعرفه» إلى «أختار بناءً على طبيعة المهمة وليس بالعادة».",
+      {id:"3-1",title:"كيف تختار النموذج المناسب لكل مهمة؟",objective:"نقل العضو من «أستخدم ما أعرفه» إلى «أختار بناءً على طبيعة المهمة وليس بالعادة».",
       content:`<p>السؤال الصح مش «أي نموذج أقوى؟» — السؤال الصح «ما الذي أحتاجه في هذه المهمة تحديداً؟»</p><div class="hbox gold"><p>ثلاثة أشياء تحدد اختيارك قبل أي شيء آخر: طبيعة المهمة، حساسية المعلومات، وبيئة عملك ومدى توافق النموذج معها.</p></div>`},
-      {id:"3-2",title:"جرّب بنفسك — قارن نموذجين على نفس المهمة",objective:"نقل المتدرب من «أظن إن هذا النموذج أفضل» إلى «اخترت بناءً على نتيجة جربتها بنفسي».",
+      {id:"3-2",title:"جرّب بنفسك — قارن نموذجين على نفس المهمة",objective:"نقل العضو من «أظن إن هذا النموذج أفضل» إلى «اخترت بناءً على نتيجة جربتها بنفسي».",
       content:`<p>أسرع طريقة تعرف أي نموذج يناسب مهامك: أرسل نفس الطلب لنموذجين وقارن النتيجتين.</p><div class="hbox gold"><p>طلب واحد يعطيك مقارنة عملية على مهامك الفعلية — أفضل من أي توصية تقرأها.</p></div><div class="hbox"><p><strong style="color:var(--gold)">ملاحظة مهمة:</strong> لو سألت نموذجاً أن يقارن نفسه بالآخرين — سيميل لتقييم نفسه بشكل إيجابي. أرسل نفس السؤال لنموذجين مختلفين للحصول على صورة أدق.</p></div>`},
-      {id:"3-3",title:"نفّذ السيناريو الكامل على مشكلة من عملك",objective:"نقل المتدرب من «اخترت النموذج» إلى «عندي خطة واضحة أنفذها خطوة بخطوة».",
+      {id:"3-3",title:"نفّذ السيناريو الكامل على مشكلة من عملك",objective:"نقل العضو من «اخترت النموذج» إلى «عندي خطة واضحة أنفذها خطوة بخطوة».",
       content:`<p>السيناريو الناجح ما يُخطَّط على ورق — يُنفَّذ داخل محادثة واحدة منظمة.</p><div class="hbox gold"><p>أربع خطوات: استكشف ← ضيّق ← تحقق ← لخّص. كل خطوة تبني على اللي قبلها وتقرّبك من نتيجة تستخدمها.</p></div><div class="hbox"><p><strong style="color:var(--gold)">قبل ما تبدأ — حدد ثلاثة أشياء:</strong></p><p>ما المشكلة بالضبط؟ أي نموذج ستستخدم ولماذا؟ من سيراجع النتيجة معك؟</p></div>`},
-      {id:"3-4",title:"متى تستخدم أكثر من نموذج — ومتى لا يستحق؟",objective:"نقل المتدرب من «سأستخدم نموذجاً واحداً لكل شيء» إلى «أعرف متى يستحق توزيع المهام بين أكثر من نموذج».",
-      content:`<div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">❌ الاستخدام العشوائي</div>نموذج واحد لكل شيء بدون تفكير.<br>تضيع وقتاً وتفوّت جودة ممكنة.</div><div class="cmp-item good"><div class="cmp-lbl">✓ التوزيع المدروس</div>ترجع للجدول الذي بنيته وتحدد النموذج الأنسب لكل نوع مهمة — القرار مبرر مش مخمّن.</div></div><div class="hbox gold"><p>ارجع للجدول الذي بنيته في الدرس الأول — هو أساس توزيعك هنا.</p><p><strong>استخدام أكثر من نموذج يستحق الجهد فقط في حالتين:</strong> الفرق في جودة النتيجة واضح ومؤثر، أو مهام مختلفة عندها متطلبات أمان مختلفة.</p></div>`}
+      {id:"3-4",title:"متى تستخدم أكثر من نموذج — ومتى لا يستحق؟",objective:"نقل العضو من «سأستخدم نموذجاً واحداً لكل شيء» إلى «أعرف متى يستحق توزيع المهام بين أكثر من نموذج».",
+      content:`<div class="cmp-grid"><div class="cmp-item bad"><div class="cmp-lbl">❌ الاستخدام العشوائي</div>نموذج واحد لكل شيء بدون تفكير.<br>تضيع وقتاً وتفوّت جودة ممكنة.</div><div class="cmp-item good"><div class="cmp-lbl">✓ التوزيع المدروس</div>ترجع للجدول الذي بنيته وتحدد النموذج الأنسب لكل نوع مهمة — القرار مبرر مش مخمّن.</div></div><div class="hbox gold"><p>ارجع للجدول الذي بنيته في الوحدة الأولى — هو أساس توزيعك هنا.</p><p><strong>استخدام أكثر من نموذج يستحق الجهد فقط في حالتين:</strong> الفرق في جودة النتيجة واضح ومؤثر، أو مهام مختلفة عندها متطلبات أمان مختلفة.</p></div>`}
     ]
   }
 ];
@@ -1476,6 +1492,7 @@ const CURRICULUM = [
 // ══════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════
+let currentSessionIdx=0;
 let state={userName:'',completed:{},influence:0,fileEntries:[],profile:{field:'',audience:'',output:''}};
 let currentChapter=0, currentLesson=null, currentChallengeChapter=0;
 
@@ -1642,7 +1659,7 @@ function showLesson(chIdx,lessonIdx){
   const ch=CURRICULUM[chIdx], lesson=ch.lessons[lessonIdx];
   const done=!!state.completed[lesson.id];
   document.getElementById('lesson-topbar-title').textContent=ch.num;
-  document.getElementById('lv-ch-label').textContent=ch.num+' — الدرس '+(lessonIdx+1);
+  document.getElementById('lv-ch-label').textContent=ch.num+' — الوحدة '+(lessonIdx+1);
   document.getElementById('lv-title').textContent=lesson.title;
   document.getElementById('lv-obj').innerHTML=`<strong>الهدف:</strong> ${lesson.objective}`;
   document.getElementById('lv-content').innerHTML=lesson.content;
@@ -1669,11 +1686,11 @@ function showLesson(chIdx,lessonIdx){
   const savedPemp = state.pemp?.[lesson.id] || '';
   pempInput.value = savedPemp;
   if (done) {
-    document.getElementById('complete-btn-text').textContent = 'تم إتمام هذا الدرس ✓';
+    document.getElementById('complete-btn-text').textContent = 'تم إتمام هذه الوحدة ✓';
     btnSession.classList.add('done');
     btnSession.disabled = false;
   } else {
-    document.getElementById('complete-btn-text').textContent = 'إتمام الدرس وحفظ الالتزام';
+    document.getElementById('complete-btn-text').textContent = 'إتمام الوحدة وحفظ الالتزام';
     btnSession.classList.remove('done');
     btnSession.disabled = savedPemp.length < 10;
   }
@@ -2094,7 +2111,7 @@ function renderExercise15(container, ex){
             <div class="built-label">مكتبتك — البرومبتات المحفوظة</div>
             <div id="lib-list"></div>
             <div class="guided-q-hint" style="margin-top:.8rem">
-              💡 يمكنك العودة لهذا الدرس في أي وقت لإضافة برومبتات جديدة لمهام مختلفة
+              💡 يمكنك العودة لهذه الوحدة في أي وقت لإضافة برومبتات جديدة لمهام مختلفة
             </div>
           </div>
         </div>
@@ -2356,9 +2373,9 @@ function requestEval(){
   const answer=document.getElementById('ch-answer').value.trim();
   if(!answer){showToast('اكتب إجابتك أولاً ثم اطلب التقييم');return;}
   const chal=CHALLENGES[currentChallengeChapter];
-  const evalPrompt=`أنت مقيّم تعليمي متخصص في برامج تدريب القيادة على الذكاء الاصطناعي.
+  const evalPrompt=`أنت مقيّم تعليمي متخصص في برامج القيادة على الذكاء الاصطناعي.
 
-مهمتك: تقييم إجابة المتدرب على تحدي الباب بشكل صريح ومفيد — لا مجاملة.
+مهمتك: تقييم إجابة العضو على تحدي الباب بشكل صريح ومفيد — لا مجاملة.
 
 عنوان التحدي:
 ${chal.title}
@@ -2366,7 +2383,7 @@ ${chal.title}
 السؤال المطروح:
 ${chal.desc}
 
-إجابة المتدرب:
+إجابة العضو:
 ${answer}
 
 ${chal.criteria}
@@ -2422,7 +2439,7 @@ function completeLesson(){
   });
   saveState();
 
-  document.getElementById('complete-btn-text').textContent='تم إتمام هذا الدرس ✓';
+  document.getElementById('complete-btn-text').textContent='تم إتمام هذه الوحدة ✓';
   const btn = document.getElementById('btn-complete-session');
   btn.classList.add('done');
   btn.disabled = false;
@@ -2444,7 +2461,7 @@ function showFile(){
   const entries=document.getElementById('file-entries');
   entries.innerHTML='';
   if(!state.fileEntries.length){
-    entries.innerHTML='<div class="file-empty"><p>لم تكتمل أي دروس بعد.</p></div>';
+    entries.innerHTML='<div class="file-empty"><p>لم تكتمل أي وحدات بعد.</p></div>';
   } else {
     state.fileEntries.forEach(e=>{
       const el=document.createElement('div');
@@ -2517,7 +2534,7 @@ function renderSessions() {
   const sub = document.getElementById('dash-welcome-sub');
   if (overallPct === 0) sub.textContent = 'ابدأ من الجلسة الأولى وسر بخطى ثابتة';
   else if (overallPct === 100) sub.textContent = 'أكملت البرنامج بالكامل — أحسنت 🏆';
-  else sub.textContent = `أكملت ${doneLessons} من ${totalLessons} دروس`;
+  else sub.textContent = `أكملت ${doneLessons} من ${totalLessons} وحدات`;
 
   SESSIONS.forEach((session, idx) => {
     const { total, done, pct } = getSessionProgress(session);
@@ -2554,7 +2571,7 @@ function renderSessions() {
         <div class="session-title">${session.title}</div>
         <div class="session-desc">${session.desc}</div>
         <div class="session-meta">
-          <span class="session-lessons-badge">${session.isCapstone ? 'مشروع نهائي' : `${total} دروس`}</span>
+          <span class="session-lessons-badge">${session.isCapstone ? 'مشروع نهائي' : `${total} وحدات`}</span>
           ${statusBadge}
         </div>
       </div>
@@ -2573,12 +2590,45 @@ function openSession(idx) {
     showCapstone();
     return;
   }
-  // إيجاد الباب المناسب في CURRICULUM
-  const firstLessonId = session.lessons[0];
-  for (let i = 0; i < CURRICULUM.length; i++) {
-    const lessonIdx = CURRICULUM[i].lessons.findIndex(l => l.id === firstLessonId);
-    if (lessonIdx !== -1) { showChapter(i); return; }
-  }
+  // فتح شاشة الجلسة مباشرة — عرض وحدات الجلسة فقط
+  currentSessionIdx = idx;
+  renderSessionView(idx);
+  showScreen('session-view');
+}
+
+function renderSessionView(idx) {
+  const session = SESSIONS[idx];
+  const container = document.getElementById('sv-lessons-list');
+  if (!container) return;
+  document.getElementById('sv-session-tag').textContent = session.tag;
+  const badge = document.getElementById('sv-session-badge');
+  if (badge) badge.textContent = session.tag;
+  document.getElementById('sv-session-title').textContent = session.title;
+  document.getElementById('sv-session-desc').textContent = session.desc;
+  container.innerHTML = '';
+  session.lessons.forEach((lessonId, li) => {
+    // إيجاد الوحدة في CURRICULUM
+    let chIdx = -1, lessonIdx = -1;
+    for (let i = 0; i < CURRICULUM.length; i++) {
+      const lIdx = CURRICULUM[i].lessons.findIndex(l => l.id === lessonId);
+      if (lIdx !== -1) { chIdx = i; lessonIdx = lIdx; break; }
+    }
+    if (chIdx === -1) return;
+    const lesson = CURRICULUM[chIdx].lessons[lessonIdx];
+    const ch = CURRICULUM[chIdx];
+    const done = !!state.completed[lesson.id];
+    const item = document.createElement('div');
+    item.className = 'lesson-item' + (done ? ' completed' : '');
+    item.onclick = () => { showLesson(chIdx, lessonIdx); };
+    item.innerHTML = `
+      <div class="lesson-status">${done ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}</div>
+      <div class="lesson-info">
+        <div class="lesson-num">${ch.num} — الوحدة ${lessonIdx + 1}</div>
+        <div class="lesson-title">${lesson.title}</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>`;
+    container.appendChild(item);
+  });
 }
 
 function showCapstone() {
@@ -2621,7 +2671,7 @@ function refreshCCLibrary(){
     el.innerHTML = `<div style="padding:1.8rem;text-align:center;background:var(--cc-surface);border:1px solid var(--cc-border);border-radius:var(--radius)">
       <div style="font-size:1.8rem;margin-bottom:.6rem">📭</div>
       <div style="font-size:.9rem;color:var(--text-dim)">لا توجد برومبتات محفوظة بعد.</div>
-      <div style="font-size:.82rem;color:var(--text-dim);margin-top:.3rem">أكمل الدرس الخامس في الباب الأول وابنِ برومبتاتك.</div>
+      <div style="font-size:.82rem;color:var(--text-dim);margin-top:.3rem">أكمل الوحدة الخامسة في الباب الأول وابنِ برومبتاتك.</div>
     </div>`;
     return;
   }
@@ -2968,7 +3018,7 @@ function showQR(lessonId) {
   const pemp = state.pemp?.[lessonId] || '';
   if (!pemp) return;
 
-  const name = state.userName || 'المتدرب';
+  const name = state.userName || 'العضو';
   const chapterName = state.chapter?.name || '';
 
   // إيجاد رقم الجلسة من SESSIONS
