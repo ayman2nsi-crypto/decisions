@@ -19,7 +19,8 @@
   --cc-border:#DBEAFE;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;overflow-x:hidden;visibility:hidden;}
+body.ready{visibility:visible;}
 .screen{display:none;min-height:100vh;}
 .screen.active{display:flex;flex-direction:column;}
 
@@ -3095,6 +3096,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     showScreen('dashboard');
     setTimeout(()=>updateProgressRing(),300);
   }
+  document.body.classList.add('ready');
 });
 </script>
 
@@ -3229,3 +3231,4 @@ window.addEventListener('DOMContentLoaded',()=>{
 </div>
 </body>
 </html>
+
