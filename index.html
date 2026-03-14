@@ -62,6 +62,18 @@ body.ready{visibility:visible;}
 .btn-reg-outline:hover{background:var(--surface2);box-shadow:none;border-color:var(--text-dim);color:var(--text);}
 @media(max-width:768px){.reg-layout{flex-direction:column;}.reg-left{width:100%;padding:2rem 1.5rem;min-height:auto;}.reg-stat{display:none;}}
 
+/* ══ Session Environment Blocks ══ */
+.session-env-block{background:#FFFFFF;border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:.8rem;overflow:hidden;box-shadow:var(--shadow);}
+.session-env-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.4rem;cursor:pointer;transition:background .2s;}
+.session-env-header:hover{background:var(--surface2);}
+.session-env-body{padding:1.2rem 1.4rem;border-top:1px solid var(--border);}
+.env-field{margin-bottom:.9rem;}
+.env-label{display:block;font-size:.8rem;font-weight:600;color:var(--text-dim);margin-bottom:.35rem;}
+.env-input{width:100%;padding:.65rem 1rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.env-input:focus{border-color:var(--primary);background:#FFFFFF;}
+.env-ta{width:100%;padding:.65rem 1rem;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;outline:none;resize:vertical;transition:border-color .2s;direction:rtl;}
+.env-ta:focus{border-color:var(--primary);background:#FFFFFF;}
+
 /* WELCOME */
 #welcome{align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .welcome-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,.08) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 80% 100%,rgba(201,168,76,.05) 0%,transparent 60%);}
@@ -519,15 +531,15 @@ body.ready{visibility:visible;}
         </svg>
       </div>
       <div class="reg-brand">نادي الذكاء الاصطناعي للشركات</div>
-      <div class="reg-tagline">نظام تشغيل سلوكي — لا مجرد تدريب<br>من مستخدم عشوائي إلى مصمم منظومة</div>
+      <div class="reg-tagline">بيئة ممارسة أعمال بالذكاء الاصطناعي<br>من مستخدم عشوائي إلى مصمم منظومة</div>
       <div class="reg-stats">
         <div class="reg-stat">
           <div class="reg-stat-num">7</div>
-          <div class="reg-stat-label">جلسات تدريبية<br>90 دقيقة لكل جلسة</div>
+          <div class="reg-stat-label">جلسات نادي<br>90 دقيقة لكل جلسة</div>
         </div>
         <div class="reg-stat">
           <div class="reg-stat-num">10</div>
-          <div class="reg-stat-label">دروس مع تمارين تطبيقية<br>على مشاريع حقيقية</div>
+          <div class="reg-stat-label">وحدات تطبيقية<br>على مشاكل أعمال حقيقية</div>
         </div>
         <div class="reg-stat">
           <div class="reg-stat-num">3</div>
@@ -648,6 +660,19 @@ body.ready{visibility:visible;}
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         ملف القائد
       </button>
+      <button class="btn-topbar" onclick="exportData()" title="تصدير البيانات كـ JSON">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        تصدير
+      </button>
+      <button class="btn-topbar" onclick="document.getElementById('import-file-input').click()" title="استيراد بيانات من ملف JSON">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        استيراد
+      </button>
+      <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="importData(event)"/>
+      <button class="btn-topbar" onclick="confirmLogout()" title="خروج وتغيير المستخدم" style="border-color:var(--red-border);color:var(--red-text);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        خروج
+      </button>
     </div>
   </div>
   <div class="dashboard-body">
@@ -758,6 +783,108 @@ body.ready{visibility:visible;}
     <div id="lv-video"></div>
     <!-- المحتوى -->
     <div class="lesson-content" id="lv-content"></div>
+    <!-- ══ بيئة الجلسة — الأقسام الثلاثة ══ -->
+    <div id="session-env-wrap" style="margin-bottom:2rem">
+
+      <!-- قسم 1: حالة الأعمال -->
+      <div class="session-env-block" id="block-business-case">
+        <div class="session-env-header" onclick="toggleEnvBlock('business-case')">
+          <div style="display:flex;align-items:center;gap:.7rem">
+            <span style="font-size:1.1rem">🏢</span>
+            <div>
+              <div style="font-size:.95rem;font-weight:700;color:var(--text)">حالة الأعمال</div>
+              <div style="font-size:.78rem;color:var(--text-dim)">صف المشكلة الحقيقية التي يعمل عليها الفريق في هذه الجلسة</div>
+            </div>
+          </div>
+          <svg id="env-arrow-business-case" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="session-env-body" id="env-body-business-case">
+          <div class="env-field">
+            <label class="env-label">وصف المشكلة</label>
+            <textarea class="env-ta" id="bc-problem" placeholder="صف المشكلة أو الفرصة التي يواجهها الفريق..." rows="3"></textarea>
+          </div>
+          <div class="env-field">
+            <label class="env-label">القسم / الإدارة</label>
+            <input class="env-input" id="bc-department" placeholder="مثال: المبيعات، العمليات، خدمة العملاء..."/>
+          </div>
+          <div class="env-field">
+            <label class="env-label">الهدف</label>
+            <input class="env-input" id="bc-objective" placeholder="ما الذي يريد الفريق تحقيقه؟"/>
+          </div>
+          <div class="env-field">
+            <label class="env-label">القيود</label>
+            <input class="env-input" id="bc-constraints" placeholder="الوقت، الموارد، أي قيود معروفة..."/>
+          </div>
+        </div>
+      </div>
+
+      <!-- قسم 2: صياغة المشكلة -->
+      <div class="session-env-block" id="block-problem-framing">
+        <div class="session-env-header" onclick="toggleEnvBlock('problem-framing')">
+          <div style="display:flex;align-items:center;gap:.7rem">
+            <span style="font-size:1.1rem">🎯</span>
+            <div>
+              <div style="font-size:.95rem;font-weight:700;color:var(--text)">صياغة المشكلة</div>
+              <div style="font-size:.78rem;color:var(--text-dim)">تحديد أبعاد المشكلة قبل بناء أي برومبت — الوحدة 2</div>
+            </div>
+          </div>
+          <svg id="env-arrow-problem-framing" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="session-env-body" id="env-body-problem-framing" style="display:none">
+          <div class="env-field">
+            <label class="env-label">ما القرار الذي يعتمد على هذه المشكلة؟</label>
+            <textarea class="env-ta" id="pf-decision" placeholder="من سيستخدم المخرج وفي أي قرار؟" rows="2"></textarea>
+          </div>
+          <div class="env-field">
+            <label class="env-label">ما المعلومات المتوفرة لدينا؟</label>
+            <textarea class="env-ta" id="pf-info" placeholder="البيانات والسياق المعروف حالياً..." rows="2"></textarea>
+          </div>
+          <div class="env-field">
+            <label class="env-label">ما النتيجة التي نريدها؟</label>
+            <textarea class="env-ta" id="pf-outcome" placeholder="كيف يبدو النجاح؟ ما الشكل المثالي للمخرج؟" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- قسم 3: تصميم البرومبت -->
+      <div class="session-env-block" id="block-prompt-design">
+        <div class="session-env-header" onclick="toggleEnvBlock('prompt-design')">
+          <div style="display:flex;align-items:center;gap:.7rem">
+            <span style="font-size:1.1rem">✍️</span>
+            <div>
+              <div style="font-size:.95rem;font-weight:700;color:var(--text)">تصميم البرومبت</div>
+              <div style="font-size:.78rem;color:var(--text-dim)">الأبعاد الأساسية لبناء برومبت هندسي — الوحدة 3</div>
+            </div>
+          </div>
+          <svg id="env-arrow-prompt-design" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="session-env-body" id="env-body-prompt-design" style="display:none">
+          <div class="env-field">
+            <label class="env-label">الهدف — ما الذي تريد من النموذج أن يفعله؟</label>
+            <input class="env-input" id="pd-goal" placeholder="تحليل / تلخيص / تقييم / تخطيط..."/>
+          </div>
+          <div class="env-field">
+            <label class="env-label">السياق — ما الخلفية التي يحتاجها النموذج؟</label>
+            <textarea class="env-ta" id="pd-context" placeholder="الشركة، الوضع الحالي، البيانات المتعلقة..." rows="2"></textarea>
+          </div>
+          <div class="env-field">
+            <label class="env-label">القيود — ما الذي لا يجب أن يفعله النموذج؟</label>
+            <input class="env-input" id="pd-constraints" placeholder="لا تقترح حلولاً، لا تفترض بيانات، ركّز على..."/>
+          </div>
+          <div class="env-field">
+            <label class="env-label">شكل المخرج — كيف تريد أن تبدو النتيجة؟</label>
+            <input class="env-input" id="pd-output" placeholder="جدول، نقاط، تقرير، مصفوفة قرار..."/>
+          </div>
+          <button class="btn-eval" style="margin-top:.4rem" onclick="applyPromptDesign()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            دمج في التمرين
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <!-- ══ نهاية بيئة الجلسة ══ -->
+
     <!-- فاصل التمرين -->
     <div class="exercise-separator">
       <div class="sep-line"></div>
@@ -766,6 +893,32 @@ body.ready{visibility:visible;}
     </div>
     <!-- التمرين -->
     <div id="lv-exercise"></div>
+
+    <!-- ══ تأمل الجلسة ══ -->
+    <div class="session-env-block" id="block-reflection" style="margin-top:1.5rem;background:rgba(201,168,76,.04);border-color:rgba(201,168,76,.25)">
+      <div class="session-env-header" onclick="toggleEnvBlock('reflection')" style="border-color:rgba(201,168,76,.2)">
+        <div style="display:flex;align-items:center;gap:.7rem">
+          <span style="font-size:1.1rem">💡</span>
+          <div>
+            <div style="font-size:.95rem;font-weight:700;color:var(--text)">التأمل</div>
+            <div style="font-size:.78rem;color:var(--text-dim)">ما الذي يمكن تحسينه في البرومبت الذي كتبته؟</div>
+          </div>
+        </div>
+        <svg id="env-arrow-reflection" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s;flex-shrink:0"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="session-env-body" id="env-body-reflection" style="display:none">
+        <div class="env-field">
+          <label class="env-label" style="color:var(--gold)">ما الذي يمكن تحسينه في البرومبت الذي كتبته؟</label>
+          <textarea class="env-ta" id="reflection-answer" placeholder="فكّر في الأبعاد الناقصة، أو السياق الذي لم تذكره، أو القيود التي كان يجب تحديدها..." rows="3" style="border-color:rgba(201,168,76,.3)"></textarea>
+        </div>
+        <button class="btn-eval" onclick="saveSessionLog()" style="margin-top:.2rem;border-color:var(--gold);color:var(--gold)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          حفظ سجل الجلسة
+        </button>
+        <div id="session-log-saved" style="display:none;margin-top:.6rem;padding:.6rem .9rem;background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.3);border-radius:8px;font-size:.82rem;color:var(--green-light)">✓ تم حفظ سجل الجلسة في ملف القائد</div>
+      </div>
+    </div>
+
     <!-- PEMP -->
     <div class="pemp-wrap" id="pemp-wrap">
       <div class="pemp-header">
@@ -1634,7 +1787,7 @@ function showChapter(chIdx){
     const el=document.createElement('div');
     el.className='lesson-item'+(done?' completed':'');
     el.onclick=()=>showLesson(chIdx,i);
-    el.innerHTML=`<div class="lesson-status">${done?`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52B788" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`:''}</div><div class="lesson-info"><div class="lesson-num">الدرس ${i+1}</div><div class="lesson-title">${lesson.title}</div></div><div class="lesson-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 3 12 9 6"/></svg></div>`;
+    el.innerHTML=`<div class="lesson-status">${done?`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52B788" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`:''}</div><div class="lesson-info"><div class="lesson-num">الوحدة ${i+1}</div><div class="lesson-title">${lesson.title}</div></div><div class="lesson-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 3 12 9 6"/></svg></div>`;
     list.appendChild(el);
   });
   const allDone=ch.lessons.every(l=>!!state.completed[l.id]);
@@ -1680,6 +1833,28 @@ function showLesson(chIdx,lessonIdx){
   }
 
   renderExercise(lesson.id);
+
+  // إعادة ضبط حقول بيئة الجلسة
+  ['bc-problem','bc-department','bc-objective','bc-constraints',
+   'pf-decision','pf-info','pf-outcome',
+   'pd-goal','pd-context','pd-constraints','pd-output',
+   'reflection-answer'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  const logSaved = document.getElementById('session-log-saved');
+  if(logSaved) logSaved.style.display = 'none';
+  // فتح قسم حالة الأعمال افتراضياً وإغلاق البقية
+  ['problem-framing','prompt-design','reflection'].forEach(n => {
+    const b = document.getElementById('env-body-'+n);
+    const a = document.getElementById('env-arrow-'+n);
+    if(b){ b.style.display = 'none'; }
+    if(a){ a.style.transform = ''; }
+  });
+  const bcBody = document.getElementById('env-body-business-case');
+  const bcArrow = document.getElementById('env-arrow-business-case');
+  if(bcBody){ bcBody.style.display = 'block'; }
+  if(bcArrow){ bcArrow.style.transform = 'rotate(180deg)'; }
 
   // ── PEMP ──
   const pempInput = document.getElementById('pemp-input');
@@ -2469,9 +2644,11 @@ function showFile(){
       el.className='file-entry';
       el.innerHTML=`
         <div class="file-entry-chapter">${e.chapter}</div>
-        <div class="file-entry-lesson">${e.lesson}</div>
+        <div class="file-entry-lesson">${e.type === 'session-log' ? '📋 سجل جلسة — ' : ''}${e.lesson}</div>
+        ${e.type === 'session-log' && e.problem && e.problem !== '—' ? `<div class="file-entry-pemp" style="background:var(--primary-dim);border-color:rgba(26,111,212,.2)">🏢 المشكلة: ${e.problem}</div>` : ''}
+        ${e.type === 'session-log' && e.reflection && e.reflection !== '—' ? `<div class="file-entry-pemp" style="background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.2)">💡 التأمل: ${e.reflection}</div>` : ''}
         ${e.pemp ? `<div class="file-entry-pemp">📌 ${e.pemp}</div>` : ''}
-        <div class="file-entry-date">${e.date}</div>`;
+        <div class="file-entry-date">${e.sessionDate || e.date}</div>`;
       entries.appendChild(el);
     });
   }
@@ -3074,8 +3251,135 @@ function checkPempFromURL() {
 }
 
 // ══════════════════════════════════════════════════════
-// TOAST
+// SESSION ENVIRONMENT — Business Case / Problem Framing / Prompt Design / Reflection / Log
 // ══════════════════════════════════════════════════════
+
+function toggleEnvBlock(name){
+  const body = document.getElementById('env-body-'+name);
+  const arrow = document.getElementById('env-arrow-'+name);
+  if(!body) return;
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  if(arrow) arrow.style.transform = open ? '' : 'rotate(180deg)';
+}
+
+function applyPromptDesign(){
+  const goal = (document.getElementById('pd-goal')?.value || '').trim();
+  const context = (document.getElementById('pd-context')?.value || '').trim();
+  const constraints = (document.getElementById('pd-constraints')?.value || '').trim();
+  const output = (document.getElementById('pd-output')?.value || '').trim();
+  if(!goal && !context && !constraints && !output){ showToast('أدخل أبعاد البرومبت أولاً'); return; }
+  // Build a scaffold string and place it into the first visible res-area in the exercise
+  const parts = [];
+  if(goal) parts.push('[الهدف]: ' + goal);
+  if(context) parts.push('[السياق]: ' + context);
+  if(constraints) parts.push('[القيود]: ' + constraints);
+  if(output) parts.push('[صيغة الإخراج]: ' + output);
+  const scaffold = parts.join('\n');
+  // Target the first res-area textarea in lv-exercise
+  const firstArea = document.querySelector('#lv-exercise .res-area');
+  if(firstArea && !firstArea.value){ firstArea.value = scaffold; }
+  // Also pre-fill the t1-ctx in control center if empty (cross-tool support)
+  const ccCtx = document.getElementById('t1-ctx');
+  if(ccCtx && !ccCtx.value && goal){ ccCtx.value = goal; }
+  showToast('تم دمج أبعاد البرومبت في التمرين ✓');
+}
+
+function saveSessionLog(){
+  const ch = CURRICULUM[currentChapter];
+  const lesson = ch?.lessons[currentLesson];
+  if(!lesson){ showToast('افتح وحدة أولاً'); return; }
+
+  const problem  = (document.getElementById('bc-problem')?.value || '').trim();
+  const dept     = (document.getElementById('bc-department')?.value || '').trim();
+  const obj      = (document.getElementById('bc-objective')?.value || '').trim();
+  const decision = (document.getElementById('pf-decision')?.value || '').trim();
+  const outcome  = (document.getElementById('pf-outcome')?.value || '').trim();
+  const goal     = (document.getElementById('pd-goal')?.value || '').trim();
+  const context  = (document.getElementById('pd-context')?.value || '').trim();
+  const reflection = (document.getElementById('reflection-answer')?.value || '').trim();
+
+  // Gather prompt from first res-area and ai output from second res-area
+  const areas = document.querySelectorAll('#lv-exercise .res-area');
+  const promptUsed = areas[0]?.value.trim() || '';
+  const aiOutput   = areas[1]?.value.trim() || '';
+  const finalSol   = areas[areas.length-1]?.value.trim() || '';
+
+  const logEntry = {
+    type: 'session-log',
+    chapter: ch.num,
+    lesson: lesson.title,
+    sessionDate: new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'}),
+    problem: problem || (dept ? `قسم ${dept} — ${obj}` : '—'),
+    prompt: promptUsed || goal || '—',
+    aiOutput: aiOutput || '—',
+    finalSolution: finalSol || '—',
+    reflection: reflection || '—',
+    pemp: (document.getElementById('pemp-input')?.value || '').trim()
+  };
+
+  if(!state.fileEntries) state.fileEntries = [];
+  // Avoid duplicate logs for same lesson
+  const existing = state.fileEntries.findIndex(e => e.type === 'session-log' && e.lesson === lesson.title);
+  if(existing !== -1) state.fileEntries[existing] = logEntry;
+  else state.fileEntries.push(logEntry);
+  saveState();
+
+  const saved = document.getElementById('session-log-saved');
+  if(saved) saved.style.display = 'block';
+  showToast('تم حفظ سجل الجلسة في ملف القائد ✓');
+}
+
+// ══════════════════════════════════════════════════════
+// EXPORT / IMPORT
+// ══════════════════════════════════════════════════════
+function exportData(){
+  const dataStr = JSON.stringify(state, null, 2);
+  const blob = new Blob([dataStr], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const date = new Date().toISOString().slice(0,10);
+  const name = (state.userName || 'user').replace(/\s+/g, '_');
+  a.href = url;
+  a.download = `aiclub_${name}_${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('تم تصدير البيانات ✓');
+}
+
+function importData(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      const imported = JSON.parse(e.target.result);
+      if(!imported || typeof imported !== 'object' || !imported.userName){
+        showToast('الملف غير صالح — تأكد أنه ملف تصدير من المنصة');
+        return;
+      }
+      if(confirm('هل تريد استيراد بيانات ' + imported.userName + '؟\n\nسيتم استبدال البيانات الحالية بالكامل.')){
+        localStorage.setItem('aiclub_state', JSON.stringify(imported));
+        showToast('تم الاستيراد بنجاح — جارٍ إعادة التحميل...');
+        setTimeout(() => location.reload(), 1200);
+      }
+    } catch(err) {
+      showToast('خطأ في قراءة الملف — تأكد أنه ملف JSON صحيح');
+    }
+  };
+  reader.readAsText(file);
+  // Reset input so same file can be re-imported if needed
+  event.target.value = '';
+}
+
+
+function confirmLogout(){
+  if(confirm('هل تريد الخروج وتغيير المستخدم؟\n\nسيتم مسح جميع بياناتك المحلية.')){
+    localStorage.removeItem('aiclub_state');
+    location.reload();
+  }
+}
+
 function showToast(msg){
   const t=document.getElementById('toast');
   document.getElementById('toast-text').textContent=msg;
@@ -3231,4 +3535,3 @@ window.addEventListener('DOMContentLoaded',()=>{
 </div>
 </body>
 </html>
-
